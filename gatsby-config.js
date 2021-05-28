@@ -3,6 +3,7 @@ module.exports = {
   siteMetadata: {
     title: "transdiscipline",
   },
+  flags: { PRESERVE_WEBPACK_CACHE: true },
   plugins: [
     "gatsby-plugin-image",
     "gatsby-plugin-react-helmet",

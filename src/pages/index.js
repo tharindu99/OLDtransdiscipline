@@ -100,7 +100,7 @@ const IndexPage = ({data}) => {
 
 export const query = graphql`
   query query_publication {
-    allMysqlPublicationDb {
+    allPublicationCsv {
       nodes {
         Address
         Authors
