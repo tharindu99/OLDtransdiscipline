@@ -30,9 +30,9 @@ const IndexPage = ({data}) => {
       case 'About':
         return <About_cmp></About_cmp>
       case 'Publication':
-        return <Publication_cmp data={data.allMysqlPublicationDb.nodes}></Publication_cmp>
+        return <Publication_cmp data={data.allPublicationCsv.nodes}></Publication_cmp>
       case 'Research Overview':
-        return <ResearchOverview_cmp data={data.allMysqlPublicationDb.nodes}></ResearchOverview_cmp>
+        return <ResearchOverview_cmp data={data.allPublicationCsv.nodes}></ResearchOverview_cmp>
       default:
         return <Segment>Under constructions</Segment>
     }
