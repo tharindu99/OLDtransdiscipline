@@ -6,6 +6,7 @@ import About_cmp from '../components/about/about';
 import Background_cmp from '../components/background'
 import Publication_cmp from '../components/publication/publication';
 import ResearchOverview_cmp from '../components/researchoverview/reseachoverview';
+import Impact_cmp from '../components/impact/impact';
 
 const pageStyles = {
   
@@ -33,6 +34,8 @@ const IndexPage = ({data}) => {
         return <Publication_cmp data={data.allPublicationCsv.nodes}></Publication_cmp>
       case 'Research Overview':
         return <ResearchOverview_cmp data={data.allPublicationCsv.nodes}></ResearchOverview_cmp>
+      case 'Impact':
+          return <Impact_cmp data={data.allPublicationCsv.nodes}></Impact_cmp>
       default:
         return <Segment>Under constructions</Segment>
     }
@@ -60,8 +63,8 @@ const IndexPage = ({data}) => {
               onClick={handleMenuClick}
             />
             <Menu.Item
-              name='Code'
-              active={activeItem === 'Code'}
+              name='Impact'
+              active={activeItem === 'Impact'}
               onClick={handleMenuClick}
             />
             <Menu.Item
