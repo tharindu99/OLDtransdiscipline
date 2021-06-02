@@ -70,15 +70,32 @@ const Impact_cmp = ({data}) => {
     
     
 
-    console.log(nodes)
-    console.log(links)
+    // console.log(nodes)
+    // console.log(links)
     return (
         <Segment>
             <ReactECharts style={{height:500}}
                 option={
                     
                     {
-                        tooltip: {},
+                        tooltip: {
+                            formatter: function (e) {
+                                console.log(e.data)
+                                if(e.dataType == 'node'){
+                                    return ``;
+                                }else if(e.dataType == 'edge'){
+                                    return (
+                                        `${e.data.source}>${e.data.target}<br />
+                                         ${e.data.research.Title}
+                                        `
+                                    )
+                                    ;
+                                }else{
+                                    return ``;
+                                }
+                                
+                              }
+                        },
                         legend: [{
                             data: categories.map(function (a) {
                                 return a.name;
