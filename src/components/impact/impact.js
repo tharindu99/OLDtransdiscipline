@@ -1,6 +1,9 @@
-import React, { useState } from 'react';
-import { Segment } from "semantic-ui-react"
+import React, { useState, useEffect } from 'react';
+import { Segment, Button, Grid } from "semantic-ui-react"
 import ReactECharts from 'echarts-for-react';
+import * as d3 from "d3";
+import Slider, { Range } from 'rc-slider';
+import 'rc-slider/assets/index.css';
 
 let links = []
 
@@ -19,8 +22,8 @@ const finder_auth_id= (dataAll) => {
 
 }
 
-const Impact_cmp = ({data}) => {
-
+function graphCalculation(data,pickedYear){
+    
     let Authors = []
     let categories = [
         {
@@ -31,98 +34,184 @@ const Impact_cmp = ({data}) => {
           }
     ]
     
-
     data.map(d => {
         return (
             d.auth = String(d.Authors).split('#')
         )
     });
+
     data.forEach(e => {
         e.auth.forEach(au => {
             Authors.push(au)
         })
     });
     Authors = [...new Set(Authors)];
-    let nodes = Authors.map((d,i) => {
+    let nodes_init = Authors.map((d,i) => {
         if(d == 'Bilal Khan '){
             return{
                 id:d,
                 name:d,
                 category: 0,
-                "symbolSize": 20,
+                symbolSize: 20,
+                years:[]
+               // x: Math.random(),
+               // y: Math.random()
+
             }
         }else{
             return {
                 id:d,
                 name:d,
                 category: 1,
-                "symbolSize": 10,
+                symbolSize: 10,
+                years:[]
+               // x: Math.random(),
+               // y: Math.random()
             }
         }
     }) 
 
     data.forEach(d => {
         finder_auth_id(d,links)
+        d.auth.forEach(d1 => {
+            let yr_arr = nodes_init.find(o => o.name === d1).years
+            if(yr_arr.indexOf(d.Year) === -1){
+                yr_arr.push(parseInt(d.Year))
+            }
+            
+            
+        })
+    })
+    const marks = {
+        '1998':1998,
+        '1999':1999,
+        '2000':2000,
+        '2001':2001,
+        '2002':2002,
+        '2003':2003,
+        '2004':2004,
+        '2005':2005,
+        '2006':2006,
+        '2007':2007,
+        '2008':2008,
+        '2009':2009,
+        '2010':2010,
+        '2011':2011,
+        '2012':2012,
+        '2013':2013,
+        '2014':2014,
+        '2015':2015,
+        '2016':2016,
+        '2017':2017,
+        '2018':2018,
+        '2019':2019,
+        '2020':2020,
+        '2021':2021
+    }
+
+    function calculate_nodeSize(year,pickedYear){
+        let nodeSize = 0
+        year.forEach(d => {
+            if(!isNaN(d)){
+                nodeSize =+ Math.abs(d-pickedYear)
+            }
+        })
+        return 8 - 2*(nodeSize/year.length)
+    }
+
+    nodes_init.forEach(d =>{
+        d.symbolSize = calculate_nodeSize(d.years,pickedYear)
+        // if(isNaN(d.years[0])){
+        //     d.symbolSize = 2
+        // }else{
+        //     d.symbolSize = Math.abs(d.years[0]-pickedYear)
+        // }
+        
     })
 
-    
+    return({
+        nodes:nodes_init,
+        links:links,
+        categories:categories,
+        marks:marks
+    })
+}
 
-    
-    
+const Impact_cmp = ({data}) => {
 
-    // console.log(nodes)
-    // console.log(links)
+    const [pickedYear, setpickedYear] = useState(2021);
+    let graph = graphCalculation(data,pickedYear)
+    
+    const handleChange = (e) =>{
+        setpickedYear(e)
+    }
+
     return (
         <Segment>
-            <ReactECharts style={{height:500}}
-                option={
-                    
-                    {
-                        tooltip: {
-                            formatter: function (e) {
-                                console.log(e.data)
-                                if(e.dataType == 'node'){
-                                    return ``;
-                                }else if(e.dataType == 'edge'){
-                                    return (
-                                        `${e.data.source}>${e.data.target}<br />
-                                         ${e.data.research.Title}
-                                        `
-                                    )
-                                    ;
-                                }else{
-                                    return ``;
+            <Grid>
+                <Grid.Column width={14}>
+                    <ReactECharts style={{height:500}}
+                    option={
+                        
+                        {
+                            tooltip: {
+                                formatter: function (e) {
+                                    if(e.dataType == 'node'){
+                                        return ``;
+                                    }else if(e.dataType == 'edge'){
+                                        return (
+                                            `${e.data.source}>${e.data.target}<br />
+                                            ${e.data.research.Title}<br />
+                                            ${e.data.research.Year}
+                                            `
+                                        )
+                                        ;
+                                    }else{
+                                        return ``;
+                                    }
+                                    
                                 }
-                                
-                              }
-                        },
-                        legend: [{
-                            data: categories.map(function (a) {
-                                return a.name;
-                            })
-                        }],
-                        series: [
-                            {
-                            name: 'Les Miserables',
-                            type: 'graph',
-                            layout: 'force',
-                            data: nodes,
-                            links: links,
-                            categories: categories,
-                            roam: true,
-                            label: {
-                                position: 'right'
                             },
-                            force: {
-                                repulsion: 100
-                            }
-                            }
-                        ]
+                            
+                            legend: [{
+                                data: graph.categories.map(function (a) {
+                                    return a.name;
+                                }),
+                                bottom:0
+                            }],
+                            
+                            animationEasingUpdate: 'quinticInOut',
+                            series: [
+                                {
+                                    name: 'co-author network',
+                                    type: 'graph',
+                                    layout: 'force',
+                                    data: graph.nodes,
+                                    links: graph.links,
+                                    categories: graph.categories,
+                                    roam: true,
+                                    label: {
+                                        position: 'right'
+                                    },
+                                    force: {
+                                        repulsion: 100
+                                    },
+                                    emphasis: {
+                                        focus: 'adjacency',
+                                        lineStyle: {
+                                            width: 4
+                                        }
+                                    },
+                                }
+                            ]
+                        }
                     }
-                }
-               
-            />
-
+                />
+                </Grid.Column>
+                <Grid.Column width={2}>
+                    <Slider onChange={handleChange} vertical min={1998} max={2021} marks={graph.marks} step={1} included={false} defaultValue={pickedYear} />
+                </Grid.Column>
+            </Grid>
         </Segment>
     )
 }
