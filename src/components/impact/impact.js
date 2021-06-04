@@ -4,6 +4,7 @@ import ReactECharts from 'echarts-for-react';
 import * as d3 from "d3";
 import Slider, { Range } from 'rc-slider';
 import 'rc-slider/assets/index.css';
+import { map } from 'd3';
 
 let links = []
 
@@ -75,7 +76,7 @@ function graphCalculation(data,pickedYear){
         finder_auth_id(d,links)
         d.auth.forEach(d1 => {
             let yr_arr = nodes_init.find(o => o.name === d1).years
-            if(yr_arr.indexOf(d.Year) === -1){
+            if(yr_arr.indexOf(parseInt(d.Year)) === -1){
                 yr_arr.push(parseInt(d.Year))
             }
             
@@ -110,13 +111,21 @@ function graphCalculation(data,pickedYear){
     }
 
     function calculate_nodeSize(year,pickedYear){
-        let nodeSize = 0
+        let min_diff_yr = 250
         year.forEach(d => {
             if(!isNaN(d)){
-                nodeSize =+ Math.abs(d-pickedYear)
+                const diff_yr = Math.abs(d-pickedYear)
+                //console.log(d+" "+pickedYear+" "+diff_yr)
+                if(min_diff_yr >= diff_yr){
+                    min_diff_yr = diff_yr
+                }
             }
         })
-        return 8 - 2*(nodeSize/year.length)
+        if(min_diff_yr == 250)min_diff_yr = 1
+        //console.log(min_diff_yr)
+
+        let sqrtScale = d3.scaleSqrt().domain([0, 23]).range([0, 20]);
+        return 24 - sqrtScale(min_diff_yr)
     }
 
     nodes_init.forEach(d =>{
@@ -157,7 +166,10 @@ const Impact_cmp = ({data}) => {
                             tooltip: {
                                 formatter: function (e) {
                                     if(e.dataType == 'node'){
-                                        return ``;
+                                        return `
+                                            ${e.data.name}<br />
+                                            ${e.data.years}
+                                        `;
                                     }else if(e.dataType == 'edge'){
                                         return (
                                             `${e.data.source}>${e.data.target}<br />
