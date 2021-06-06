@@ -7,6 +7,7 @@ import Background_cmp from '../components/background'
 import Publication_cmp from '../components/publication/publication';
 import ResearchOverview_cmp from '../components/researchoverview/reseachoverview';
 import Impact_cmp from '../components/impact/impact';
+import Funding_cmp from '../components/funding/funding';
 
 const pageStyles = {
   
@@ -36,6 +37,8 @@ const IndexPage = ({data}) => {
         return <ResearchOverview_cmp data={data.allPublicationCsv.nodes}></ResearchOverview_cmp>
       case 'Impact':
           return <Impact_cmp data={data.allPublicationCsv.nodes}></Impact_cmp>
+      case 'Funding':
+          return <Funding_cmp data={data.allGrantsCsv.nodes}></Funding_cmp>
       default:
         return <Segment>Under constructions</Segment>
     }
@@ -123,6 +126,21 @@ export const query = graphql`
         Volume
         Year
         id
+      }
+    },
+    allGrantsCsv {
+      nodes {
+        Amount
+        Category
+        Funder
+        Job
+        ID
+        PIs
+        Status
+        Title
+        YearEnd
+        YearStart
+        funder_shortname
       }
     }
   }

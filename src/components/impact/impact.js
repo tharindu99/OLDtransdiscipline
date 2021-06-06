@@ -4,7 +4,7 @@ import ReactECharts from 'echarts-for-react';
 import * as d3 from "d3";
 import Slider, { Range } from 'rc-slider';
 import 'rc-slider/assets/index.css';
-import { map } from 'd3';
+
 
 let links = []
 
@@ -166,10 +166,17 @@ const Impact_cmp = ({data}) => {
                             tooltip: {
                                 formatter: function (e) {
                                     if(e.dataType == 'node'){
-                                        return `
+                                        if(e.data.name == 'Bilal Khan '){
+                                            return `
+                                            ${e.data.name}
+                                        `;
+                                        }else{
+                                            return `
                                             ${e.data.name}<br />
                                             ${e.data.years}
                                         `;
+                                        }
+                                        
                                     }else if(e.dataType == 'edge'){
                                         return (
                                             `${e.data.source}>${e.data.target}<br />
