@@ -26,34 +26,42 @@ const finder_auth_id= (dataAll) => {
 function graphCalculation(data,pickedYear){
     
     let Authors = []
-    // let categories = [
-    //     {
-    //         "name": "Bilal Khan"
-    //       },
-    //       {
-    //         "name": "Co-Authors"
-    //       }
-    // ]
+    let categories = [
+        {
+            "name": "Bilal Khan"
+          },
+          {
+            "name": "Co-Authors"
+          }
+    ]
     
     data.map(d => {
+        let auth_tmp = [] 
+        let tmp = String(d.Authors).split('#')
+        tmp.forEach(d => {
+            auth_tmp.push(d.trim())
+        });
         return (
-            d.auth = String(d.Authors).split('#')
+            d.auth = auth_tmp
         )
     });
 
     data.forEach(e => {
-        e.auth.forEach(au => {
-            Authors.push(au)
+        e.auth.forEach(au => { 
+            
+                Authors.push(au)
+            
         })
     });
     Authors = [...new Set(Authors)];
+    console.log(Authors)
     let nodes_init = Authors.map((d,i) => {
-        if(d == 'Bilal Khan '){
+        if(d == 'Bilal Khan' ){
             return{
                 id:d,
                 name:d,
                 category: 0,
-                symbolSize: 20,
+                symbolSize: 10,
                 years:[]
                // x: Math.random(),
                // y: Math.random()
@@ -130,6 +138,7 @@ function graphCalculation(data,pickedYear){
 
     nodes_init.forEach(d =>{
         d.symbolSize = calculate_nodeSize(d.years,pickedYear)
+        d.label = { show : d.symbolSize >5}
         // if(isNaN(d.years[0])){
         //     d.symbolSize = 2
         // }else{
@@ -139,9 +148,9 @@ function graphCalculation(data,pickedYear){
     })
 
     return({
-        nodes:nodes_init.filter(d=> {return d.name != 'Bilal Khan '}),
-        links:links.filter(d => {return d.source != 'Bilal Khan '}),
-        //categories:categories,
+        nodes:nodes_init,
+        links:links,
+        categories:categories,
         marks:marks
     })
 }
@@ -156,6 +165,7 @@ const Impact_cmp = ({data}) => {
     }
 
     return (
+        <>
         <Segment>
             <Grid>
                 <Grid.Column width={14}>
@@ -192,12 +202,12 @@ const Impact_cmp = ({data}) => {
                                 }
                             },
                             
-                            // legend: [{
-                            //     data: graph.categories.map(function (a) {
-                            //         return a.name;
-                            //     }),
-                            //     bottom:0
-                            // }],
+                            legend: [{
+                                data: graph.categories.map(function (a) {
+                                    return a.name;
+                                }),
+                                bottom:0
+                            }],
                             
                             animationEasingUpdate: 'quinticInOut',
                             series: [
@@ -207,7 +217,7 @@ const Impact_cmp = ({data}) => {
                                     layout: 'force',
                                     data: graph.nodes,
                                     links: graph.links,
-                                    //categories: graph.categories,
+                                    categories: graph.categories,
                                     roam: true,
                                     label: {
                                         position: 'right'
@@ -232,6 +242,51 @@ const Impact_cmp = ({data}) => {
                 </Grid.Column>
             </Grid>
         </Segment>
+        <Segment>
+            <ReactECharts style={{height:500}}
+                option={
+                    {
+                        title: {
+                            text: 'Research Team work',
+                            subtext: 'Circular layout',
+                            top: 'bottom',
+                            left: 'right'
+                        },
+                        tooltip: {},
+                        legend: [{
+                            data: graph.categories.map(function (a) {
+                                return a.name;
+                            })
+                        }],
+                        animationDurationUpdate: 1500,
+                        animationEasingUpdate: 'quinticInOut',
+                        series: [
+                            {
+                                name: 'Researcher',
+                                type: 'graph',
+                                layout: 'circular',
+                                circular: {
+                                    rotateLabel: true
+                                },
+                                data: graph.nodes,
+                                links: graph.links,
+                                categories: graph.categories,
+                                roam: true,
+                                label: {
+                                    position: 'right',
+                                    formatter: '{b}'
+                                },
+                                lineStyle: {
+                                    color: 'source',
+                                    curveness: 0.3
+                                }
+                            }
+                        ]
+                    }
+                }
+            />
+        </Segment>
+        </>
     )
 }
 

@@ -106,12 +106,33 @@ const Funding_cmp = ({data}) => {
         }
     })
 
-
-    console.log(Sankey_nodes)
-    console.log(Sankey_Links)
-
     return (
         <>
+        <Segment>
+            <ReactECharts style={{height:800}}
+                    option={
+                        {
+                            tooltip: {
+                                trigger: 'item',
+                                triggerOn: 'mousemove',
+                                formatter: function (e) {
+                                    return  e.name+ ' : Funds $'+e.value.toFixed(2)+'M'
+                                }
+
+                            },
+                            series: {
+                                type: 'sankey',
+                                layout: 'none',
+                                emphasis: {
+                                    focus: 'adjacency'
+                                },
+                                data: Sankey_nodes,
+                                links: Sankey_Links
+                            }
+                        }
+                    }
+            />
+        </Segment>
         <Segment>
             <ReactECharts style={{height:500}}
                 option={
@@ -162,27 +183,7 @@ const Funding_cmp = ({data}) => {
 
         </Segment>
 
-        <Segment>
-            <ReactECharts style={{height:700}}
-                    option={
-                        {
-                            tooltip: {
-                                trigger: 'item',
-                                triggerOn: 'mousemove'
-                            },
-                            series: {
-                                type: 'sankey',
-                                layout: 'none',
-                                emphasis: {
-                                    focus: 'adjacency'
-                                },
-                                data: Sankey_nodes,
-                                links: Sankey_Links
-                            }
-                        }
-                    }
-            />
-        </Segment>
+        
         </>
     )
 }
