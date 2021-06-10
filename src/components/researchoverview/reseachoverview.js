@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import * as d3 from 'd3';
 import * as dc from 'dc';
-import { Segment, Grid, Header, Statistic, Card } from 'semantic-ui-react';
+import { Segment, Grid, Header, Button, Icon } from 'semantic-ui-react';
 import './style.css'
 
 import { NumberDisplay, BarChart, SunburstChart, RowChart, DataTable } from 'react-dc-js';
@@ -21,6 +21,11 @@ const ResearchOverview_cmp = ({data}) =>{
 
     const dimensionAuthor = cx.dimension(d => d.Authors.split('#'))
     const groupAuthor = dimensionAuthor.group();
+
+    const resetClicked = () => {
+        dc.filterAll()
+        dc.renderAll()
+    }
     
     return (
         <Segment>
@@ -38,7 +43,7 @@ const ResearchOverview_cmp = ({data}) =>{
                             height={300}
                         />  
                     </Grid.Column>
-                    <Grid.Column width={8} textAlign='center'>
+                    <Grid.Column width={7} textAlign='center'>
                         <Header as='h4' >Co Authors</Header>
                             <SunburstChart 
                                 dimension={dimensionAuthor} 
@@ -50,6 +55,11 @@ const ResearchOverview_cmp = ({data}) =>{
                                 width={300}
                                 height={300}
                             />
+                    </Grid.Column>
+                    <Grid.Column width={1} textAlign='center'>
+                        <Button icon onClick={resetClicked}>
+                            <Icon name='redo' />
+                        </Button>
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row>

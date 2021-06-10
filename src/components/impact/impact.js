@@ -26,14 +26,14 @@ const finder_auth_id= (dataAll) => {
 function graphCalculation(data,pickedYear){
     
     let Authors = []
-    let categories = [
-        {
-            "name": "Bilal Khan"
-          },
-          {
-            "name": "Co-Authors"
-          }
-    ]
+    // let categories = [
+    //     {
+    //         "name": "Bilal Khan"
+    //       },
+    //       {
+    //         "name": "Co-Authors"
+    //       }
+    // ]
     
     data.map(d => {
         return (
@@ -139,9 +139,9 @@ function graphCalculation(data,pickedYear){
     })
 
     return({
-        nodes:nodes_init,
-        links:links,
-        categories:categories,
+        nodes:nodes_init.filter(d=> {return d.name != 'Bilal Khan '}),
+        links:links.filter(d => {return d.source != 'Bilal Khan '}),
+        //categories:categories,
         marks:marks
     })
 }
@@ -192,12 +192,12 @@ const Impact_cmp = ({data}) => {
                                 }
                             },
                             
-                            legend: [{
-                                data: graph.categories.map(function (a) {
-                                    return a.name;
-                                }),
-                                bottom:0
-                            }],
+                            // legend: [{
+                            //     data: graph.categories.map(function (a) {
+                            //         return a.name;
+                            //     }),
+                            //     bottom:0
+                            // }],
                             
                             animationEasingUpdate: 'quinticInOut',
                             series: [
@@ -207,7 +207,7 @@ const Impact_cmp = ({data}) => {
                                     layout: 'force',
                                     data: graph.nodes,
                                     links: graph.links,
-                                    categories: graph.categories,
+                                    //categories: graph.categories,
                                     roam: true,
                                     label: {
                                         position: 'right'
