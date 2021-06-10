@@ -48,7 +48,7 @@ const IndexPage = ({data}) => {
   return (
     <>
     <Header as='h1' content='Bilal Khan' style={style.h1} textAlign='center'/>
-      <Container style={{ padding: '0em 10em 10px' }}>
+      <Container style={{ padding: '0em 0em 10px' }} >
         <Menu pointing>
             <Menu.Item
               name='About'
@@ -88,7 +88,7 @@ const IndexPage = ({data}) => {
           </Menu>
       </Container>
       <Background_cmp></Background_cmp>
-      <Container style={{ padding: '0em 10em 10px' }}>
+      <Container>
         <Active_content></Active_content>
       </Container>
       

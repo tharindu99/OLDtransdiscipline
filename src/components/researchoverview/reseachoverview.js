@@ -9,9 +9,6 @@ import crossfilter from 'crossfilter2';
 
 const ResearchOverview_cmp = ({data}) =>{
 
-
-    console.log(data)
-
     const cx = crossfilter(data)
     const dimensionYear = cx.dimension(d => d.Year)
     const groupYear = dimensionYear.group().reduceCount(function(d) {return d;});
@@ -24,18 +21,13 @@ const ResearchOverview_cmp = ({data}) =>{
 
     const dimensionAuthor = cx.dimension(d => d.Authors.split('#'))
     const groupAuthor = dimensionAuthor.group();
-
-    var expCount = function(d) {
-        return d;
-    };
-
     
     return (
         <Segment>
             <Grid columns='equal'>
                 <Grid.Row >
-                    <Grid.Column width={8}>
-                        <Header as='h5' icon textAlign='center'>Subject areas</Header>
+                    <Grid.Column width={8} textAlign='center'>
+                        <Header as='h4' >Subject areas</Header>
                         <SunburstChart 
                             dimension={dimensionSubject} 
                             group={groupSubject} 
@@ -46,8 +38,8 @@ const ResearchOverview_cmp = ({data}) =>{
                             height={300}
                         />  
                     </Grid.Column>
-                    <Grid.Column width={8}>
-                        <Header as='h5' icon textAlign='center'>Co Authors</Header>
+                    <Grid.Column width={8} textAlign='center'>
+                        <Header as='h4' >Co Authors</Header>
                             <SunburstChart 
                                 dimension={dimensionAuthor} 
                                 group={groupAuthor} 
@@ -62,7 +54,7 @@ const ResearchOverview_cmp = ({data}) =>{
                 </Grid.Row>
                 <Grid.Row>
                     <Grid.Column width={16}>
-                    <Header as='h5' icon textAlign='center'>Research Contributions (Yearly)</Header>
+                    <Header as='h4' icon textAlign='center'>Research Contributions (Yearly)</Header>
                         <BarChart 
                             dimension={dimensionYear} 
                             group={groupYear}
@@ -82,7 +74,7 @@ const ResearchOverview_cmp = ({data}) =>{
                         </tr>
                     </thead>
                         <DataTable 
-                            dimension={dimensionSubject} 
+                            dimension={dimensionYear} 
                             columns={
                                 [
                                     // function (d) { return (
@@ -98,6 +90,7 @@ const ResearchOverview_cmp = ({data}) =>{
                             }
                             sortBy ={function (d) { return d.Year }}
                             order = {(d3.descending)}
+                            size={150}
                         />
                         </table>
                     </Grid.Column>
