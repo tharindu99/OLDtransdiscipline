@@ -31,9 +31,9 @@ const IndexPage = ({data}) => {
     switch(activeItem) {
       case 'About':
         return <About_cmp></About_cmp>
-      case 'Publication':
+      case 'Publications':
         return <Publication_cmp data={data.allPublicationCsv.nodes}></Publication_cmp>
-      case 'Research Overview':
+      case 'Research Explorer':
         return <ResearchOverview_cmp data={data.allPublicationCsv.nodes}></ResearchOverview_cmp>
       case 'Impact':
           return <Impact_cmp data={data.allPublicationCsv.nodes}></Impact_cmp>
@@ -56,13 +56,13 @@ const IndexPage = ({data}) => {
               onClick={handleMenuClick}
             />
             <Menu.Item
-              name='Publication'
+              name='Publications'
               active={activeItem === 'Publication'}
               onClick={handleMenuClick}
             />
             <Menu.Item
-              name='Research Overview'
-              active={activeItem === 'Research Overview'}
+              name='Research Explorer'
+              active={activeItem === 'Research Explorer'}
               onClick={handleMenuClick}
             />
             <Menu.Item

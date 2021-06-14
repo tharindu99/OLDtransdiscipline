@@ -155,14 +155,26 @@ function graphCalculation(data,pickedYear){
     })
 }
 
+const static_graph = (graph) =>{
+
+    graph.nodes.forEach(n => {
+        n.x = Math.random()
+        n.y = Math.random()
+    });
+    return graph
+}
+
 const Impact_cmp = ({data}) => {
 
     const [pickedYear, setpickedYear] = useState(2021);
-    let graph = graphCalculation(data,pickedYear)
+    const graph = graphCalculation(data,pickedYear)
     
     const handleChange = (e) =>{
         setpickedYear(e)
     }
+
+    let Ngraph = graphCalculation(data,pickedYear)
+    const positioned_graph = static_graph(Ngraph)
 
     return (
         <>
@@ -241,6 +253,49 @@ const Impact_cmp = ({data}) => {
                     <Slider onChange={handleChange} vertical min={1998} max={2021} marks={graph.marks} step={1} included={false} defaultValue={pickedYear} />
                 </Grid.Column>
             </Grid>
+        </Segment>
+        <Segment>
+            <ReactECharts style={{height:500}}
+                option={
+                    {
+                        tooltip: {},
+                        legend: [{
+                            // selectedMode: 'single',
+                            data: positioned_graph.categories.map(function (a) {
+                                return a.name;
+                            })
+                        }],
+                        animationDuration: 1500,
+                        animationEasingUpdate: 'quinticInOut',
+                        series: [
+                            {
+                                name: 'Researcher',
+                                type: 'graph',
+                                layout: 'none',
+                                data: positioned_graph.nodes,
+                                links: positioned_graph.links,
+                                categories: positioned_graph.categories,
+                                roam: true,
+                                label: {
+                                    position: 'right',
+                                    formatter: '{b}'
+                                },
+                                lineStyle: {
+                                    color: 'source',
+                                    curveness: 0.3
+                                },
+                                emphasis: {
+                                    focus: 'adjacency',
+                                    lineStyle: {
+                                        width: 10
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                }
+
+            />
         </Segment>
         <Segment>
             <ReactECharts style={{height:500}}

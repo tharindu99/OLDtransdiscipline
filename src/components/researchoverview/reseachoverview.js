@@ -9,6 +9,13 @@ import crossfilter from 'crossfilter2';
 
 const ResearchOverview_cmp = ({data}) =>{
 
+    console.log(data)
+
+    data.forEach(d => {
+        //d.Year = new Date(d.Year)
+        d.Year = parseInt(d.Year)
+    });
+
     const cx = crossfilter(data)
     const dimensionYear = cx.dimension(d => d.Year)
     const groupYear = dimensionYear.group().reduceCount(function(d) {return d;});
@@ -36,11 +43,11 @@ const ResearchOverview_cmp = ({data}) =>{
                         <SunburstChart 
                             dimension={dimensionSubject} 
                             group={groupSubject} 
-                            innerRadius={50}
-                            legend={dc.legend().x(0).y(170)}
+                            innerRadius={75}
+                            legend={dc.legend().x(0).y(0)}
                             renderLabel={false}
-                            width={350}
-                            height={300}
+                           // width={350}
+                            height={400}
                         />  
                     </Grid.Column>
                     <Grid.Column width={7} textAlign='center'>
@@ -48,12 +55,12 @@ const ResearchOverview_cmp = ({data}) =>{
                             <SunburstChart 
                                 dimension={dimensionAuthor} 
                                 group={groupAuthor} 
-                                innerRadius={30}
-                                Radius={400}
+                                innerRadius={40}
+                               // Radius={100}
                               // legend={dc.legend()}
                                 renderLabel={false}
-                                width={300}
-                                height={300}
+                               // width={300}
+                                height={400}
                             />
                     </Grid.Column>
                     <Grid.Column width={1} textAlign='center'>
@@ -68,8 +75,9 @@ const ResearchOverview_cmp = ({data}) =>{
                         <BarChart 
                             dimension={dimensionYear} 
                             group={groupYear}
-                            x={d3.scaleLinear().domain([1997,2021])}
-                           // xUnits={dc.units.integers}
+                            //x={d3.scaleTime().domain([new Date("1998-01-01"), Date.now()]).nice()}
+                            x={d3.scaleOrdinal().domain(d3.range(1998,2021,1))}
+                            xUnits={dc.units.ordinal}
                             title={"Yearly"}
                             height={175}
                         />
