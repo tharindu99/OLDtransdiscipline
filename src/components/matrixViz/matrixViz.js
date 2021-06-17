@@ -8,7 +8,7 @@ import './MatrixViz.css'
 
 const MatrixViz = ({data}) => {
 
-    const [ColorChanges, setColorChanges] = useState({LB:0.01,UB:0.1})
+    const [ColorChanges, setColorChanges] = useState({LB:0.1,UB:0.2})
 
     const links_tmp = data.map(d=>{
         return{
@@ -45,7 +45,7 @@ const MatrixViz = ({data}) => {
         if(value <= ColorChanges.LB){
             return 'black'
         }else if (value >= ColorChanges.UB){
-            return 'yellow'
+            return 'red'
         }else{
             const colorScale = d3.scaleOrdinal().domain([ColorChanges.LB,ColorChanges.UB]).range(d3.schemeGreens[9])
             return colorScale(value)
@@ -147,8 +147,7 @@ const MatrixViz = ({data}) => {
                         .on("mouseout", mouseout);
         }
         function mouseover(p) {
-            //console.log(p)
-            d3.selectAll(".row text").classed("active", function(d, i) { return i == p.y; });
+            d3.selectAll(".row text").classed("active", function(d, i) {  return i == p.y; });
             d3.selectAll(".column text").classed("active", function(d, i) { return i == p.x; });
         }
         function mouseout() {
