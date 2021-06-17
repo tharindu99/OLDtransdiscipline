@@ -81,7 +81,7 @@ const MatrixViz = ({data}) => {
         });
         links.forEach(function(link) {
             matrix[link.source][link.target].z += link.value;
-           // matrix[link.target][link.source].z += link.value;
+            matrix[link.target][link.source].z += link.value;
             
             nodes[link.source].count += link.value;
             nodes[link.target].count += link.value;
