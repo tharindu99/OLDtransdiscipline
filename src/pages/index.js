@@ -8,6 +8,7 @@ import Publication_cmp from '../components/publication/publication';
 import ResearchOverview_cmp from '../components/researchoverview/reseachoverview';
 import Impact_cmp from '../components/impact/impact';
 import Funding_cmp from '../components/funding/funding';
+import MatrixViz from '../components/matrixViz/matrixViz';
 
 const pageStyles = {
   
@@ -27,6 +28,10 @@ const IndexPage = ({data}) => {
     setActiveItem(name)
   }
 
+  data.allPdFgraphCsv.nodes.forEach(d => {
+    d.cosine = parseFloat(d.cosine)
+  })
+
   const Active_content = () => {
     switch(activeItem) {
       case 'About':
@@ -39,6 +44,8 @@ const IndexPage = ({data}) => {
           return <Impact_cmp data={data.allPublicationCsv.nodes}></Impact_cmp>
       case 'Funding':
           return <Funding_cmp data={data.allGrantsCsv.nodes}></Funding_cmp>
+      case 'MatrixViz':
+          return <MatrixViz data={data.allPdFgraphCsv.nodes}></MatrixViz>
       default:
         return <Segment>Under constructions</Segment>
     }
@@ -85,7 +92,13 @@ const IndexPage = ({data}) => {
               active={activeItem === 'Profile'}
               onClick={handleMenuClick}
             />
+            <Menu.Item
+              name='MatrixViz'
+              active={activeItem === 'MatrixViz'}
+              onClick={handleMenuClick}
+            />
           </Menu>
+          
       </Container>
       <Background_cmp></Background_cmp>
       <Container>
@@ -141,6 +154,13 @@ export const query = graphql`
         YearEnd
         YearStart
         funder_shortname
+      }
+    },
+    allPdFgraphCsv {
+      nodes {
+        doc1
+        doc2
+        cosine
       }
     }
   }
