@@ -2,19 +2,57 @@ import React, { useState } from 'react';
 import * as d3 from 'd3';
 import * as dc from 'dc';
 import { Segment, Grid, Header, Button, Icon } from 'semantic-ui-react';
+import stringHash  from 'string-hash';
 import './style.css'
 
 import { NumberDisplay, BarChart, SunburstChart, RowChart, DataTable } from 'react-dc-js';
 import crossfilter from 'crossfilter2';
 
-const ResearchOverview_cmp = ({data}) =>{
+const ResearchOverview_cmp = ({data}) =>{ 
 
-    console.log(data)
+    let subject_list_tmp = []
+
+    const AuthorString = (e,noKhan) =>{
+        if(noKhan){
+            const co_authors = e.replace(/\b(?:Bilal Khan|Bilal Khan | Bilal Khan|Bilal Khan # |# Bilal Khan)\b/,"Bilal Khan")
+            const co_authors_list = co_authors.split('#') //.map(e => e.trim());
+            const co_author_trimed = co_authors_list.map(e => e)
+            const co_author_filtered = co_author_trimed.filter(d => d !=="").sort()
+            console.log(co_author_filtered.join('#'))
+            return co_author_filtered.join('#')
+
+        }else{
+            const co_authors_list = e.split('#').map(e => e.trim());
+            const co_author_filtered = co_authors_list.filter(d => d !=="").sort()
+            return co_author_filtered.join('#')
+        }
+        
+    }
 
     data.forEach(d => {
-        //d.Year = new Date(d.Year)
         d.Year = parseInt(d.Year)
+        //d.Authors = d.Authors.replace(/\b(?:Bilal Khan|Bilal Khan # |# Bilal Khan)\b/,"")
+        d.co_authors =  AuthorString(String(d.Authors),true)
     });
+
+    console.log(data)
+   
+
+    const Colors = (e) =>{
+        let colorNumber
+        if(typeof e === 'object'){
+            // legend values
+            colorNumber = stringHash(e[e.length-1])
+        }else{
+            colorNumber = stringHash(e)
+        }
+        const Setcolors =  d3.scaleQuantize()
+                            .domain([0,4300000000])
+                            .range(["#5E4FA2", "#3288BD", "#66C2A5", "#ABDDA4", "#E6F598", 
+                            "#FFFFBF", "#FEE08B", "#FDAE61", "#F46D43", "#D53E4F", "#9E0142"]);
+
+        return Setcolors(colorNumber)
+    } 
 
     const cx = crossfilter(data)
     const dimensionYear = cx.dimension(d => d.Year)
@@ -26,8 +64,8 @@ const ResearchOverview_cmp = ({data}) =>{
     const dimensionSubject = cx.dimension(d => d.Subject.split("#"))
     const groupSubject = dimensionSubject.group()
 
-    const dimensionAuthor = cx.dimension(d => d.Authors.split('#'))
-    const groupAuthor = dimensionAuthor.group();
+    const dimensionCoAuthor = cx.dimension(d =>{ return d.co_authors.split("#")})
+    const groupCoAuthor = dimensionCoAuthor.group();
 
     const resetClicked = () => {
         dc.filterAll()
@@ -46,16 +84,22 @@ const ResearchOverview_cmp = ({data}) =>{
                             innerRadius={75}
                             legend={dc.legend().x(0).y(0)}
                             renderLabel={false}
+                            colors={function(d){ return Colors(d)}}
                            // width={350}
                             height={400}
+                            //colorAccessor ={ d => { return d.key}}
+                            valueAccessor = {function(d) { return d.value; }}
                         />  
                     </Grid.Column>
                     <Grid.Column width={7} textAlign='center'>
                         <Header as='h4' >Co Authors</Header>
                             <SunburstChart 
-                                dimension={dimensionAuthor} 
-                                group={groupAuthor} 
+                                dimension={dimensionCoAuthor} 
+                                group={groupCoAuthor} 
                                 innerRadius={40}
+                                //legend={dc.legend().x(0).y(0)}
+                                cap={10}
+                                colors={function(d){ return Colors(d)}}
                                // Radius={100}
                               // legend={dc.legend()}
                                 renderLabel={false}
