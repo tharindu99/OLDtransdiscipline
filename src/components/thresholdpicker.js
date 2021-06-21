@@ -2,6 +2,7 @@ import 'rc-tooltip/assets/bootstrap.css';
 import React,{useState,useEffect} from 'react';
 import { Grid, Button} from 'semantic-ui-react';
 import Slider, { Range } from 'rc-slider';
+import Category10 from '../images/Category10.png'
 
 const ThresholdPicker = ({Threshold,data}) => {
 
@@ -36,11 +37,15 @@ const ThresholdPicker = ({Threshold,data}) => {
     <Grid>
         <Grid.Row>
             <Grid.Column width={6}>
-                <Range allowCross={false} defaultValue={[LB*100,UB*100]} draggableTrack onChange={handler}/>
+                <Grid.Row>
+                    <Range allowCross={false} defaultValue={[LB*100,UB*100]} draggableTrack onChange={handler}/>
+                </Grid.Row>
+                <Grid.Row  style={{paddingTop:30}}>
+                    <img src ={Category10} alt="SVG" width={220}/>
+                </Grid.Row>
             </Grid.Column>
             <Grid.Column width={3}>
-                <p>LB : {LB}</p>
-                <p>UB : {UB}</p>
+                <p>LB : {LB} | UB : {UB} </p>
             </Grid.Column>
             <Grid.Column width={7}>
                 <Grid.Row>

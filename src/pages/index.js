@@ -7,6 +7,7 @@ import Background_cmp from '../components/background'
 import Publication_cmp from '../components/publication/publication';
 import ResearchOverview_cmp from '../components/researchoverview/reseachoverview';
 import Impact_cmp from '../components/impact/impact';
+import Impact_cmp_new from '../components/impact/impact_new';
 import Funding_cmp from '../components/funding/funding';
 import MatrixViz from '../components/matrixViz/matrixViz';
 
@@ -42,6 +43,8 @@ const IndexPage = ({data}) => {
         return <ResearchOverview_cmp data={data.allPublicationCsv.nodes}></ResearchOverview_cmp>
       case 'Impact':
           return <Impact_cmp data={data.allPublicationCsv.nodes}></Impact_cmp>
+      case 'Impact_new':
+          return <Impact_cmp_new data={data.allPublicationCsv.nodes}></Impact_cmp_new>
       case 'Funding':
           return <Funding_cmp data={data.allGrantsCsv.nodes}></Funding_cmp>
       case 'MatrixViz':
@@ -75,6 +78,11 @@ const IndexPage = ({data}) => {
             <Menu.Item
               name='Impact'
               active={activeItem === 'Impact'}
+              onClick={handleMenuClick}
+            />
+            <Menu.Item
+              name='Impact_new'
+              active={activeItem === 'Impact_new'}
               onClick={handleMenuClick}
             />
             <Menu.Item

@@ -17,7 +17,6 @@ const MatrixViz = ({data}) => {
             value:d.cosine
         }
     }) 
-
     const tmp_nodes = []
 
     links_tmp.forEach(d => {
@@ -25,7 +24,9 @@ const MatrixViz = ({data}) => {
         tmp_nodes.push(d.target)
     });
 
-    const nodes = [... new Set(tmp_nodes)].map(d=>{
+    const tmp_nodes1 = [... new Set(tmp_nodes)]
+
+    const nodes = tmp_nodes1.map(d=>{
         return{
             name:d,
             group: 0
@@ -41,13 +42,15 @@ const MatrixViz = ({data}) => {
     })
 
     const colorFunc = (value) =>{
-
         if(value <= ColorChanges.LB){
-            return 'black'
+            return 'white'
         }else if (value >= ColorChanges.UB){
             return 'red'
         }else{
-            const colorScale = d3.scaleOrdinal().domain([ColorChanges.LB,ColorChanges.UB]).range(d3.schemeGreens[9])
+            const colorScale = d3.scaleQuantize()
+                .domain([ColorChanges.LB,ColorChanges.UB])
+                .range(d3.schemeCategory10)
+                //.range(d3.schemeSpectral[10]);
             return colorScale(value)
         }
 
@@ -80,12 +83,18 @@ const MatrixViz = ({data}) => {
             matrix[i] = d3.range(n).map(function(j) { return {x: j, y: i, z: 0}; });
         });
         links.forEach(function(link) {
-            matrix[link.source][link.target].z += link.value;
-            matrix[link.target][link.source].z += link.value;
+            matrix[link.source][link.target].z = link.value + 0.0000001;
+            matrix[link.target][link.source].z = link.value + 0.0000001;
+           // matrix[link.target][link.source].z = link.value;
+            
+            // matrix[link.source][link.source].z = link.value;
+            // matrix[link.target][link.target].z = link.value;
             
             nodes[link.source].count += link.value;
             nodes[link.target].count += link.value;
         });
+
+       
         ///////
         let orders = {
             name: d3.range(n).sort(function(a, b) { return d3.ascending(nodes[a].name, nodes[b].name); }),
