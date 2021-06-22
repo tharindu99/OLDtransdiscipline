@@ -38,19 +38,27 @@ const ResearchOverview_cmp = ({data}) =>{
     console.log(data)
    
 
-    const Colors = (e) =>{
+    const Colors = (a) =>{
+        
+        
         let colorNumber
-        if(typeof e === 'object'){
+        if(typeof a === 'object' && a.length > 0){
+            const e = a[a.length-1].trim()
+            console.log(e)
             // legend values
-            colorNumber = stringHash(e[e.length-1])
+            colorNumber = stringHash(e)
         }else{
+            const e = a.trim()
+            console.log(e)
             colorNumber = stringHash(e)
         }
         const Setcolors =  d3.scaleQuantize()
                             .domain([0,4300000000])
-                            .range(["#5E4FA2", "#3288BD", "#66C2A5", "#ABDDA4", "#E6F598", 
-                            "#FFFFBF", "#FEE08B", "#FDAE61", "#F46D43", "#D53E4F", "#9E0142"]);
+                            .range(["#a6cee3","#1f78b4","#b2df8a","#33a02c","#fb9a99","#e31a1c","#fdbf6f","#ff7f00","#cab2d6","#6a3d9a","#ffff99","#b15928"]);
+                            // .range(["#5E4FA2", "#3288BD", "#66C2A5", "#ABDDA4", "#E6F598", 
+                            // "#FFFFBF", "#FEE08B", "#FDAE61", "#F46D43", "#D53E4F", "#9E0142"]);
 
+        console.log(Setcolors(colorNumber))
         return Setcolors(colorNumber)
     } 
 
@@ -84,7 +92,7 @@ const ResearchOverview_cmp = ({data}) =>{
                             innerRadius={75}
                             legend={dc.legend().x(0).y(0)}
                             renderLabel={false}
-                            colors={function(d){ return Colors(d)}}
+                            colors={function(d){  return Colors(d)}}
                            // width={350}
                             height={400}
                             //colorAccessor ={ d => { return d.key}}
@@ -97,11 +105,11 @@ const ResearchOverview_cmp = ({data}) =>{
                                 dimension={dimensionCoAuthor} 
                                 group={groupCoAuthor} 
                                 innerRadius={40}
-                                //legend={dc.legend().x(0).y(0)}
+                                legend={dc.legend().x(0).y(0)}
                                 cap={10}
-                                colors={function(d){ return Colors(d)}}
+                                //colors={function(d){ return Colors(d)}}
                                // Radius={100}
-                              // legend={dc.legend()}
+                              legend={dc.legend()}
                                 renderLabel={false}
                                // width={300}
                                 height={400}
