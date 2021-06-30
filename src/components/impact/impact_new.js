@@ -4,6 +4,7 @@ import ReactECharts from 'echarts-for-react';
 import * as d3 from "d3";
 import Slider, { Range } from 'rc-slider';
 import 'rc-slider/assets/index.css';
+import { linkHorizontal } from 'd3';
 
 
 let links = []
@@ -11,67 +12,101 @@ let links = []
 const Impact_cmp_new = ({data}) => {
 
     const [graph,setgraph] = useState({nodes:[],links:[],categories:[]})
-
-    const graph_calc = (auth) => {
-        
-    }
-
     const data_ByYear = d3.group(data, d => parseInt(d.Year))
     const timeline = [...data_ByYear.keys()].sort()
     let sereies = []
 
-    timeline.forEach(t => {
+    //console.log(data_ByYear)
+
+    const link_calc = (author_list,content) =>{
+        const authors = author_list.filter(d => d != 'Bilal Khan')
+        let links = []
+        if(authors.length>1){
+            for (let i = 0; i < authors.length; i++) {
+                for (let j = i+1; j < authors.length; j++) {
+                    links.push(
+                        {source:authors[i] ,target:authors[j] , content:content}
+                    )
+                } 
+            }
+        }
+        return links
+    }
+
+    const grap_calc = (year) => {
+        let nodes = [], tmp_nodes = []
+        let links = []
+        data.forEach(e => {
+            if(e.Year <= year){
+                const authors_list = e.Authors.split('#').map(Function.prototype.call, String.prototype.trim)
+                links = links.concat(link_calc(authors_list,e))
+            }
+        });
+        //console.log(links)
+        links.forEach(e => {
+            
+            tmp_nodes.push(e.source)
+            tmp_nodes.push(e.target)
+        });
+
+        const tmp_nodes1 = [...new Set(tmp_nodes)]
         
-    });
+        tmp_nodes1.forEach(e => {
+            
+            nodes.push({id:e,name:e,symbolSize: 10})
+        }); 
+
+        return {nodes:nodes,links:links}
+    }
+    
 
     let option_custom = []
     let timeline_data_custom = []
 
-    console.log(timeline)
+    
 
-    // for (var n = 0; n < timeline.length; n++) {
-    //     timeline_data_custom.push(timeline[n]);
-    //     option_custom.push({
-    //         title: {
-    //             show: true,
-    //             'text': timeline[n] + ''
-    //         },
-    //         series: {
-    //             name: 'Researcher',
-    //             type: 'graph',
-    //             layout: 'force',
-    //             data: graph.nodes,
-    //             links: graph.links,
-    //             //categories: graph.categories,
-    //             roam: true,
-    //             label: {
-    //                 position: 'right',
-    //                 formatter: '{b}'
-    //             },
-    //             lineStyle: {
-    //                 color: 'red',
-    //                 curveness: 0.3
-    //             },
-    //             // emphasis: {
-    //             //     focus: 'adjacency',
-    //             //     lineStyle: {
-    //             //         width: 10
-    //             //     }
-    //             // }
+    for (var n = 0; n < timeline.length; n++) {
+        timeline_data_custom.push(timeline[n]);
+        const grp = grap_calc(timeline[n])
+        console.log(grp)
+        option_custom.push({
+            title: {
+                show: true,
+                'text': "Prof.Bilal Khan's research Co-Author Network from 1998 to " + timeline[n] + ''
+            },
+            series: {
+                name: 'yr'+timeline[n],
+                type: 'graph',
+                layout: 'force',
+                data: grp.nodes,
+                links: grp.links,
+                //categories: graph.categories,
+                roam: true,
+                label: {
+                    position: 'right',
+                    formatter: '{b}'
+                },
+                lineStyle: {
+                    color: 'red',
+                    curveness: 0.3
+                },
+                // emphasis: {
+                //     focus: 'adjacency',
+                //     lineStyle: {
+                //         width: 10
+                //     }
+                // }
             
-    //         }
-    //     });
-    // }
+            }
+        });
+    }
 
 
 
     useEffect(()=>{
         setgraph({
-            nodes:[
-                {id:"1",name:"1",symbolSize: 10},
-                {id:"2",name:"2",symbolSize: 10}
-            ],
-            links:[{source:"1",target:"2"}]
+            nodes:[],
+            links:[]
         })
     },[])
     
@@ -86,7 +121,7 @@ const Impact_cmp_new = ({data}) => {
                             timeline:{
                                 axisType: 'category',
                                 orient: 'vertical',
-                                autoPlay: false,
+                                autoPlay: true,
                                 inverse: true,
                                 playInterval: 1000,
                                 left: null,
@@ -105,6 +140,22 @@ const Impact_cmp_new = ({data}) => {
                                 },
                                 data: timeline
                             },
+                            tooltip: {
+                                formatter: function (e) {
+                                    if(e.dataType == 'node'){
+                                        return `${e.data.name} `;
+                                    }else if(e.dataType == 'edge'){
+                                        return (
+                                            `${e.data.source} and ${e.data.target}<br />
+                                            ${e.data.content.Title}<br />
+                                            ${e.data.content.Year}
+                                            `
+                                        )
+                                        ;
+                                    }
+                                    console.log(e)
+                                }
+                            },
                             series: [
                                 {
                                     name: 'Researcher',
@@ -122,12 +173,12 @@ const Impact_cmp_new = ({data}) => {
                                         color: 'red',
                                         curveness: 0.3
                                     },
-                                    // emphasis: {
-                                    //     focus: 'adjacency',
-                                    //     lineStyle: {
-                                    //         width: 10
-                                    //     }
-                                    // }
+                                    emphasis: {
+                                        focus: 'adjacency',
+                                        lineStyle: {
+                                            width: 10
+                                        }
+                                    }
                                 }
                             ],
                             options: option_custom

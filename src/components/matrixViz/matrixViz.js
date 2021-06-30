@@ -17,6 +17,9 @@ const MatrixViz = ({data}) => {
             value:d.cosine
         }
     }) 
+
+
+
     const tmp_nodes = []
 
     links_tmp.forEach(d => {
@@ -32,6 +35,8 @@ const MatrixViz = ({data}) => {
             group: 0
         }
     })
+
+   // console.log(nodes)
 
     const links = links_tmp.map(d=>{
         return{
@@ -90,9 +95,10 @@ const MatrixViz = ({data}) => {
             // matrix[link.source][link.source].z = link.value;
             // matrix[link.target][link.target].z = link.value;
             
-            nodes[link.source].count += link.value;
-            nodes[link.target].count += link.value;
+            nodes[link.source].count = link.value;
+            nodes[link.target].count = link.value;
         });
+        
 
        
         ///////

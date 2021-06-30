@@ -84,13 +84,14 @@ const ResearchOverview_cmp = ({data}) =>{
         <Segment>
             <Grid columns='equal'>
                 <Grid.Row >
-                    <Grid.Column width={8} textAlign='center'>
+                    <Grid.Column width={6} textAlign='center'>
                         <Header as='h4' >Subject areas</Header>
                         <SunburstChart 
                             dimension={dimensionSubject} 
                             group={groupSubject} 
                             innerRadius={75}
                             legend={dc.legend().x(0).y(0)}
+                            
                             renderLabel={false}
                             colors={function(d){  return Colors(d)}}
                            // width={350}
@@ -105,11 +106,10 @@ const ResearchOverview_cmp = ({data}) =>{
                                 dimension={dimensionCoAuthor} 
                                 group={groupCoAuthor} 
                                 innerRadius={40}
-                                legend={dc.legend().x(0).y(0)}
+                                legend={dc.legend().x(0).y(0).maxItems(5)}
                                 cap={10}
                                 //colors={function(d){ return Colors(d)}}
                                // Radius={100}
-                              legend={dc.legend()}
                                 renderLabel={false}
                                // width={300}
                                 height={400}
