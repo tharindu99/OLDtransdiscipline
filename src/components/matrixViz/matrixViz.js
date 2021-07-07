@@ -6,7 +6,7 @@ import './MatrixViz.css'
 
 
 
-const MatrixViz = ({data}) => {
+const MatrixViz = ({data,nodeclusters}) => {
 
     const [ColorChanges, setColorChanges] = useState({LB:0.1,UB:0.2})
 
@@ -18,8 +18,6 @@ const MatrixViz = ({data}) => {
         }
     }) 
 
-
-
     const tmp_nodes = []
 
     links_tmp.forEach(d => {
@@ -30,13 +28,24 @@ const MatrixViz = ({data}) => {
     const tmp_nodes1 = [... new Set(tmp_nodes)]
 
     const nodes = tmp_nodes1.map(d=>{
+
+        const clusterVal = nodeclusters.find(e => e.doc == d ) 
+        
         return{
             name:d,
-            group: 0
+            group: 0,
+            clusters5:  parseInt(clusterVal.clusters5),
+            clusters10: parseInt(clusterVal.clusters10),
+            clusters15: parseInt(clusterVal.clusters15),
+            clusters20: parseInt(clusterVal.clusters20),
+            clusters25: parseInt(clusterVal.clusters25),
+            clusters30: parseInt(clusterVal.clusters30),
+            clusters40: parseInt(clusterVal.clusters40),
+            clusters50: parseInt(clusterVal.clusters50)
         }
     })
 
-   // console.log(nodes)
+   console.log(nodes)
 
     const links = links_tmp.map(d=>{
         return{
@@ -105,7 +114,16 @@ const MatrixViz = ({data}) => {
         let orders = {
             name: d3.range(n).sort(function(a, b) { return d3.ascending(nodes[a].name, nodes[b].name); }),
             count: d3.range(n).sort(function(a, b) { return nodes[b].count - nodes[a].count; }),
-            group: d3.range(n).sort(function(a, b) { return nodes[b].group - nodes[a].group; })
+            clusters5: d3.range(n).sort(function(a, b) { return nodes[b].clusters5 - nodes[a].clusters5; }),
+            clusters10: d3.range(n).sort(function(a, b) { return nodes[b].clusters10 - nodes[a].clusters10; }),
+            clusters15: d3.range(n).sort(function(a, b) { return nodes[b].clusters15 - nodes[a].clusters15; }),
+            clusters20: d3.range(n).sort(function(a, b) { return nodes[b].clusters20 - nodes[a].clusters20; }),
+            clusters25: d3.range(n).sort(function(a, b) { return nodes[b].clusters25 - nodes[a].clusters25; }),
+            clusters30: d3.range(n).sort(function(a, b) { return nodes[b].clusters30 - nodes[a].clusters30; }),
+            clusters40: d3.range(n).sort(function(a, b) { return nodes[b].clusters40 - nodes[a].clusters40; }),
+            clusters50: d3.range(n).sort(function(a, b) { return nodes[b].clusters50 - nodes[a].clusters50; }),
+
+            // group: d3.range(n).sort(function(a, b) { return nodes[b].group - nodes[a].group; })
         };
         x.domain(orders.name);
         svg.append("rect")
@@ -215,7 +233,15 @@ const MatrixViz = ({data}) => {
                         <select id="order">
                             <option value="name">by Name</option>
                             <option value="count">by Frequency</option>
-                            <option value="group">by Cluster</option>
+                            <option value="clusters5">by Clusters5</option>
+                            <option value="clusters10">by Clusters10</option>
+                            <option value="clusters15">by Clusters15</option>
+                            <option value="clusters20">by Clusters20</option>
+                            <option value="clusters25">by Clusters25</option>
+                            <option value="clusters30">by Clusters30</option>
+                            <option value="clusters40">by Clusters40</option>
+                            <option value="clusters50">by Clusters50</option>
+                            {/* <option value="group">by Cluster</option> */}
                         </select>
 
                             {/* <Dropdown

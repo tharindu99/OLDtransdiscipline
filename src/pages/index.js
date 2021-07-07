@@ -48,7 +48,7 @@ const IndexPage = ({data}) => {
       case 'Funding':
           return <Funding_cmp data={data.allGrantsCsv.nodes}></Funding_cmp>
       case 'MatrixViz':
-          return <MatrixViz data={data.allPdFgraphCsv.nodes}></MatrixViz>
+          return <MatrixViz data={data.allPdFgraphCsv.nodes} nodeclusters={data.allDocClustersCsv.nodes}></MatrixViz>
       default:
         return <Segment>Under constructions</Segment>
     }
@@ -169,6 +169,19 @@ export const query = graphql`
         doc1
         doc2
         cosine
+      }
+    },
+    allDocClustersCsv {
+      nodes {
+        clusters10
+        clusters15
+        clusters20
+        clusters25
+        clusters30
+        clusters40
+        clusters5
+        clusters50
+        doc
       }
     }
   }
