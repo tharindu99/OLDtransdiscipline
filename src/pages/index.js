@@ -174,13 +174,24 @@ export const query = graphql`
     allDocClustersCsv {
       nodes {
         clusters10
+        clusters11
+        clusters12
+        clusters13
+        clusters14
         clusters15
+        clusters16
+        clusters17
+        clusters18
+        clusters19
+        clusters2
         clusters20
-        clusters25
-        clusters30
-        clusters40
+        clusters3
+        clusters4
         clusters5
-        clusters50
+        clusters6
+        clusters7
+        clusters8
+        clusters9
         doc
       }
     }

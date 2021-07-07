@@ -34,14 +34,25 @@ const MatrixViz = ({data,nodeclusters}) => {
         return{
             name:d,
             group: 0,
-            clusters5:  parseInt(clusterVal.clusters5),
+            clusters2: parseInt(clusterVal.clusters2),
+            clusters3: parseInt(clusterVal.clusters3),
+            clusters4: parseInt(clusterVal.clusters4),
+            clusters5: parseInt(clusterVal.clusters5),
+            clusters6: parseInt(clusterVal.clusters6),
+            clusters7: parseInt(clusterVal.clusters7),
+            clusters8: parseInt(clusterVal.clusters8),
+            clusters9: parseInt(clusterVal.clusters9),
             clusters10: parseInt(clusterVal.clusters10),
+            clusters11: parseInt(clusterVal.clusters11),
+            clusters12: parseInt(clusterVal.clusters12),
+            clusters13: parseInt(clusterVal.clusters13),
+            clusters14: parseInt(clusterVal.clusters14),
             clusters15: parseInt(clusterVal.clusters15),
-            clusters20: parseInt(clusterVal.clusters20),
-            clusters25: parseInt(clusterVal.clusters25),
-            clusters30: parseInt(clusterVal.clusters30),
-            clusters40: parseInt(clusterVal.clusters40),
-            clusters50: parseInt(clusterVal.clusters50)
+            clusters16: parseInt(clusterVal.clusters16),
+            clusters17: parseInt(clusterVal.clusters17),
+            clusters18: parseInt(clusterVal.clusters18),
+            clusters19: parseInt(clusterVal.clusters19),
+            clusters20: parseInt(clusterVal.clusters20)
         }
     })
 
@@ -114,14 +125,25 @@ const MatrixViz = ({data,nodeclusters}) => {
         let orders = {
             name: d3.range(n).sort(function(a, b) { return d3.ascending(nodes[a].name, nodes[b].name); }),
             count: d3.range(n).sort(function(a, b) { return nodes[b].count - nodes[a].count; }),
+            clusters2: d3.range(n).sort(function(a, b) { return nodes[b].clusters2 - nodes[a].clusters2; }),
+            clusters3: d3.range(n).sort(function(a, b) { return nodes[b].clusters3 - nodes[a].clusters3; }),
+            clusters4: d3.range(n).sort(function(a, b) { return nodes[b].clusters4 - nodes[a].clusters4; }),
             clusters5: d3.range(n).sort(function(a, b) { return nodes[b].clusters5 - nodes[a].clusters5; }),
+            clusters6: d3.range(n).sort(function(a, b) { return nodes[b].clusters6 - nodes[a].clusters6; }),
+            clusters7: d3.range(n).sort(function(a, b) { return nodes[b].clusters7 - nodes[a].clusters7; }),
+            clusters8: d3.range(n).sort(function(a, b) { return nodes[b].clusters8 - nodes[a].clusters8; }),
+            clusters9: d3.range(n).sort(function(a, b) { return nodes[b].clusters9 - nodes[a].clusters9; }),
             clusters10: d3.range(n).sort(function(a, b) { return nodes[b].clusters10 - nodes[a].clusters10; }),
+            clusters11: d3.range(n).sort(function(a, b) { return nodes[b].clusters11 - nodes[a].clusters11; }),
+            clusters12: d3.range(n).sort(function(a, b) { return nodes[b].clusters12 - nodes[a].clusters12; }),
+            clusters13: d3.range(n).sort(function(a, b) { return nodes[b].clusters13 - nodes[a].clusters13; }),
+            clusters14: d3.range(n).sort(function(a, b) { return nodes[b].clusters14 - nodes[a].clusters14; }),
             clusters15: d3.range(n).sort(function(a, b) { return nodes[b].clusters15 - nodes[a].clusters15; }),
-            clusters20: d3.range(n).sort(function(a, b) { return nodes[b].clusters20 - nodes[a].clusters20; }),
-            clusters25: d3.range(n).sort(function(a, b) { return nodes[b].clusters25 - nodes[a].clusters25; }),
-            clusters30: d3.range(n).sort(function(a, b) { return nodes[b].clusters30 - nodes[a].clusters30; }),
-            clusters40: d3.range(n).sort(function(a, b) { return nodes[b].clusters40 - nodes[a].clusters40; }),
-            clusters50: d3.range(n).sort(function(a, b) { return nodes[b].clusters50 - nodes[a].clusters50; }),
+            clusters16: d3.range(n).sort(function(a, b) { return nodes[b].clusters16 - nodes[a].clusters16; }),
+            clusters17: d3.range(n).sort(function(a, b) { return nodes[b].clusters17 - nodes[a].clusters17; }),
+            clusters18: d3.range(n).sort(function(a, b) { return nodes[b].clusters18 - nodes[a].clusters18; }),
+            clusters19: d3.range(n).sort(function(a, b) { return nodes[b].clusters19 - nodes[a].clusters19; }),
+            clusters20: d3.range(n).sort(function(a, b) { return nodes[b].clusters20 - nodes[a].clusters20; })
 
             // group: d3.range(n).sort(function(a, b) { return nodes[b].group - nodes[a].group; })
         };
@@ -233,14 +255,25 @@ const MatrixViz = ({data,nodeclusters}) => {
                         <select id="order">
                             <option value="name">by Name</option>
                             <option value="count">by Frequency</option>
+                            <option value="clusters2">by Clusters2</option>
+                            <option value="clusters3">by Clusters3</option>
+                            <option value="clusters4">by Clusters4</option>
                             <option value="clusters5">by Clusters5</option>
+                            <option value="clusters6">by Clusters6</option>
+                            <option value="clusters7">by Clusters7</option>
+                            <option value="clusters8">by Clusters8</option>
+                            <option value="clusters9">by Clusters9</option>
                             <option value="clusters10">by Clusters10</option>
+                            <option value="clusters11">by Clusters11</option>
+                            <option value="clusters12">by Clusters12</option>
+                            <option value="clusters13">by Clusters13</option>
+                            <option value="clusters14">by Clusters14</option>
                             <option value="clusters15">by Clusters15</option>
+                            <option value="clusters16">by Clusters16</option>
+                            <option value="clusters17">by Clusters17</option>
+                            <option value="clusters18">by Clusters18</option>
+                            <option value="clusters19">by Clusters19</option>
                             <option value="clusters20">by Clusters20</option>
-                            <option value="clusters25">by Clusters25</option>
-                            <option value="clusters30">by Clusters30</option>
-                            <option value="clusters40">by Clusters40</option>
-                            <option value="clusters50">by Clusters50</option>
                             {/* <option value="group">by Cluster</option> */}
                         </select>
 
