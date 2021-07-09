@@ -56,8 +56,6 @@ const MatrixViz = ({data,nodeclusters}) => {
         }
     })
 
-   console.log(nodes)
-
     const links = links_tmp.map(d=>{
         return{
             source: nodes.findIndex(e => e.name === d.source),
@@ -75,7 +73,11 @@ const MatrixViz = ({data,nodeclusters}) => {
             const colorScale = d3.scaleQuantize()
                 .domain([ColorChanges.LB,ColorChanges.UB])
                 .range(d3.schemeCategory10)
-                //.range(d3.schemeSpectral[10]);
+
+            // const colorScale = d3.scaleSequential()
+            //     .domain([ColorChanges.LB,ColorChanges.UB])
+            //     .range(d3.schemeOranges[9])
+                
             return colorScale(value)
         }
 
@@ -99,6 +101,16 @@ const MatrixViz = ({data,nodeclusters}) => {
             .style("margin-left", margin.left + "px")
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+        let Tooltip = d3.select("#mapX")
+            .append("div")
+            .style("opacity", 0)
+            .attr("class", "tooltip")
+            .style("background-color", "white")
+            .style("border", "solid")
+            .style("border-width", "2px")
+            .style("border-radius", "5px")
+            .style("padding", "5px")
 
         let matrix = [], n = nodes.length
 
@@ -188,6 +200,8 @@ const MatrixViz = ({data,nodeclusters}) => {
             .attr("font-size","7px")
             .text(function(d, i) { return nodes[i].name; });
 
+        
+
         function row1(row) {
             let cell = d3.select(this).selectAll(".cell")
                         .data(row.filter(function(d) { return d.z; }))
@@ -198,15 +212,35 @@ const MatrixViz = ({data,nodeclusters}) => {
                         .attr("height", x.bandwidth())
                         //.style("fill-opacity", function(d) { return z(d.z); })
                         .style("fill", function(d) { return colorFunc(d.z) })
-                        .on("mouseover", mouseover)
-                        .on("mouseout", mouseout);
+                        //.on("mouseover", mouseover)
+                        //.on("mousemove", mousemove)
+                        //.on("mouseout", mouseout);
         }
-        function mouseover(p) {
-            d3.selectAll(".row text").classed("active", function(d, i) {  return i == p.y; });
-            d3.selectAll(".column text").classed("active", function(d, i) { return i == p.x; });
+        function mouseover(event,d) {
+            Tooltip
+                .style("opacity", 1)
+            d3.select(this)
+                .style("stroke", "black")
+                .style("opacity", 1)
+            // d3.selectAll(".row text").classed("active", function(d, i) {  return i == p.y; });
+            // d3.selectAll(".column text").classed("active", function(d, i) { return i == p.x; });
         }
+
+        function mousemove (d) {
+            console.log(d)
+            // Tooltip
+            //   .html("The exact value of<br>this cell is: " + d)
+            //   .style("left", (d3.mouse(this)[0]+70) + "px")
+            //   .style("top", (d3.mouse(this)[1]) + "px")
+        }
+
         function mouseout() {
-            d3.selectAll("text").classed("active", false);
+            Tooltip
+             .style("opacity", 0)
+            d3.select(this)
+            .style("stroke", "none")
+            .style("opacity", 0.8)
+            //d3.selectAll("text").classed("active", false);
         }
 
         d3.select("#order").on("change", function() {
@@ -240,17 +274,15 @@ const MatrixViz = ({data,nodeclusters}) => {
     const setThreshold = (e) =>{
         setColorChanges(e)
     }
-   
-    console.log(ColorChanges)
+
 
     return(
         <Segment>
             <Grid>
                 <Grid.Row >
-                    <Grid.Column width={13}>
+                    <Grid.Column width={10}>
                         <ThresholdPicker Threshold={setThreshold} data={data} ></ThresholdPicker>
-                    </Grid.Column>
-                   
+                    </Grid.Column>                
                     <Grid.Column width={3}>
                         <select id="order">
                             <option value="name">by Name</option>
@@ -286,6 +318,7 @@ const MatrixViz = ({data,nodeclusters}) => {
                             /> */}
                     </Grid.Column>
                 </Grid.Row>
+                
                 <Grid.Row >
                     <Grid.Column center>
                         <div id={'mapX'}></div>
