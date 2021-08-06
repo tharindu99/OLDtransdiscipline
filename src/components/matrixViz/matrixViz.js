@@ -9,6 +9,7 @@ import './MatrixViz.css'
 const MatrixViz = ({data,nodeclusters}) => {
 
     const [ColorChanges, setColorChanges] = useState({LB:0.1,UB:0.2})
+    
 
     const links_tmp = data.map(d=>{
         return{
@@ -63,6 +64,17 @@ const MatrixViz = ({data,nodeclusters}) => {
             value: d.value
         }
     })
+
+    const nameColor = (v) => {
+
+            const colorMe = d3.scaleQuantize()
+                .domain([0,20])
+                .range(d3.schemeCategory10)
+
+            return colorMe(v)
+    }
+        
+
 
     const colorFunc = (value) =>{
         if(value <= ColorChanges.LB){
@@ -198,6 +210,7 @@ const MatrixViz = ({data,nodeclusters}) => {
             .attr("dy", ".32em")
             .attr("text-anchor", "start")
             .attr("font-size","7px")
+           // .style('fill', (d,i) => ( nameColor(nodes[i].clusters10)))
             .text(function(d, i) { return nodes[i].name; });
 
         

@@ -4,345 +4,253 @@ import ReactECharts from 'echarts-for-react';
 import * as d3 from "d3";
 import Slider, { Range } from 'rc-slider';
 import 'rc-slider/assets/index.css';
+import { linkHorizontal } from 'd3';
 
 
 let links = []
 
-const finder_auth_id= (dataAll) => {
-    const auth = dataAll.auth
-    for (let a1 = 0; a1 < auth.length; a1++) {
-        for (let a2 = a1+1; a2 < auth.length; a2++) {
-            links.push({
-                'source': auth[a1],
-                'target': auth[a2],
-                'research': dataAll
-            })
+const Impact = ({data}) => {
+
+    const [graph,setgraph] = useState({nodes:[],links:[],categories:[]})
+    const [Roundgraph,setRoundgraph] = useState({RoundNodes:[],RoundLinks:[],Roundategories:[]})
+    const data_ByYear = d3.group(data, d => parseInt(d.Year))
+    const timeline = [...data_ByYear.keys()].sort()
+    let sereies = []
+
+    //console.log(data_ByYear)
+
+    const link_calc = (author_list,content) =>{
+        const authors = author_list.filter(d => d != 'Bilal Khan')
+        let links = []
+        if(authors.length>1){
+            for (let i = 0; i < authors.length; i++) {
+                for (let j = i+1; j < authors.length; j++) {
+                    links.push(
+                        {source:authors[i] ,target:authors[j] , content:content}
+                    )
+                } 
+            }
         }
-        
+        return links
     }
 
-}
-
-function graphCalculation(data,pickedYear){
-    
-    let Authors = []
-    let categories = [
-        {
-            "name": "Bilal Khan"
-          },
-          {
-            "name": "Co-Authors"
-          }
-    ]
-    
-    data.map(d => {
-        let auth_tmp = [] 
-        let tmp = String(d.Authors).split('#')
-        tmp.forEach(d => {
-            auth_tmp.push(d.trim())
+    const grap_calc = (year) => {
+        let nodes = [], tmp_nodes = []
+        let links = []
+        data.forEach(e => {
+            if(e.Year <= year){
+                const authors_list = e.Authors.split('#').map(Function.prototype.call, String.prototype.trim)
+                links = links.concat(link_calc(authors_list,e))
+            }
         });
-        return (
-            d.auth = auth_tmp
-        )
-    });
-
-    data.forEach(e => {
-        e.auth.forEach(au => { 
+        //console.log(links)
+        links.forEach(e => {
             
-                Authors.push(au)
-            
-        })
-    });
-    Authors = [...new Set(Authors)];
-    console.log(Authors)
-    let nodes_init = Authors.map((d,i) => {
-        if(d == 'Bilal Khan' ){
-            return{
-                id:d,
-                name:d,
-                category: 0,
-                symbolSize: 10,
-                years:[]
-               // x: Math.random(),
-               // y: Math.random()
+            tmp_nodes.push(e.source)
+            tmp_nodes.push(e.target)
+        });
 
-            }
-        }else{
-            return {
-                id:d,
-                name:d,
-                category: 1,
-                symbolSize: 10,
-                years:[]
-               // x: Math.random(),
-               // y: Math.random()
-            }
-        }
-    }) 
-
-    data.forEach(d => {
-        finder_auth_id(d,links)
-        d.auth.forEach(d1 => {
-            let yr_arr = nodes_init.find(o => o.name === d1).years
-            if(yr_arr.indexOf(parseInt(d.Year)) === -1){
-                yr_arr.push(parseInt(d.Year))
-            }
-            
-            
-        })
-    })
-    const marks = {
-        '1998':1998,
-        '1999':1999,
-        '2000':2000,
-        '2001':2001,
-        '2002':2002,
-        '2003':2003,
-        '2004':2004,
-        '2005':2005,
-        '2006':2006,
-        '2007':2007,
-        '2008':2008,
-        '2009':2009,
-        '2010':2010,
-        '2011':2011,
-        '2012':2012,
-        '2013':2013,
-        '2014':2014,
-        '2015':2015,
-        '2016':2016,
-        '2017':2017,
-        '2018':2018,
-        '2019':2019,
-        '2020':2020,
-        '2021':2021
-    }
-
-    function calculate_nodeSize(year,pickedYear){
-        let min_diff_yr = 250
-        year.forEach(d => {
-            if(!isNaN(d)){
-                const diff_yr = Math.abs(d-pickedYear)
-                //console.log(d+" "+pickedYear+" "+diff_yr)
-                if(min_diff_yr >= diff_yr){
-                    min_diff_yr = diff_yr
-                }
-            }
-        })
-        if(min_diff_yr == 250)min_diff_yr = 1
-        //console.log(min_diff_yr)
-
-        let sqrtScale = d3.scaleSqrt().domain([0, 23]).range([0, 20]);
-        return 24 - sqrtScale(min_diff_yr)
-    }
-
-    nodes_init.forEach(d =>{
-        d.symbolSize = calculate_nodeSize(d.years,pickedYear)
-        d.label = { show : d.symbolSize >5}
-        // if(isNaN(d.years[0])){
-        //     d.symbolSize = 2
-        // }else{
-        //     d.symbolSize = Math.abs(d.years[0]-pickedYear)
-        // }
+        const tmp_nodes1 = [...new Set(tmp_nodes)]
         
-    })
+        tmp_nodes1.forEach(e => {
+            
+            nodes.push({id:e,name:e,symbolSize: 10})
+        }); 
 
-    return({
-        nodes:nodes_init,
-        links:links,
-        categories:categories,
-        marks:marks
-    })
-}
-
-const static_graph = (graph) =>{
-
-    graph.nodes.forEach(n => {
-        n.x = Math.random()
-        n.y = Math.random()
-    });
-    return graph
-}
-
-const Impact_cmp = ({data}) => {
-
-    const [pickedYear, setpickedYear] = useState(2021);
-    const graph = graphCalculation(data,pickedYear)
+        return {nodes:nodes,links:links}
+    }
     
-    const handleChange = (e) =>{
-        setpickedYear(e)
+
+    let option_custom = []
+    let timeline_data_custom = []
+
+    
+
+    for (var n = 0; n < timeline.length; n++) {
+        timeline_data_custom.push(timeline[n]);
+        const grp = grap_calc(timeline[n])
+        //console.log(grp)
+        option_custom.push({
+            title: {
+                show: true,
+                'text': "Prof.Bilal Khan's research Co-Author Network from 1998 to " + timeline[n] + ''
+            },
+            series: [
+                {
+                    name: 'yr'+timeline[n],
+                    type: 'graph',
+                    layout: 'force',
+                    data: grp.nodes,
+                    links: grp.links,
+                    //categories: graph.categories,
+                    roam: true,
+                    label: {
+                        position: 'right',
+                        formatter: '{b}'
+                    },
+                    lineStyle: {
+                        color: 'red',
+                        curveness: 0.3
+                    },
+                    itemStyle: {
+                        color: '#4169E1'
+                    }
+                    // emphasis: {
+                    //     focus: 'adjacency',
+                    //     lineStyle: {
+                    //         width: 10
+                    //     }
+                    // }
+                },
+                {
+                    name: 'yr1'+timeline[n],
+                    type: 'graph',
+                    layout: 'circular',
+                    data: grp.nodes,
+                    links: grp.links,
+                    //categories: graph.categories,
+                    roam: true,
+                    label: {
+                        position: 'right',
+                        formatter: '{b}'
+                    },
+                    lineStyle: {
+                        color: 'red',
+                        curveness: 0.3
+                    },
+                    itemStyle: {
+                        color: '#4169E1'
+                    }
+                    // emphasis: {
+                    //     focus: 'adjacency',
+                    //     lineStyle: {
+                    //         width: 10
+                    //     }
+                    // }
+            
+                }
+            ],
+        });
     }
 
-    let Ngraph = graphCalculation(data,pickedYear)
-    const positioned_graph = static_graph(Ngraph)
+
+
+    useEffect(()=>{
+        setgraph({
+            nodes:[],
+            links:[]
+        })
+    },[])
+    
+console.log(graph)
 
     return (
-        <>
         <Segment>
             <Grid>
-                <Grid.Column width={14}>
-                    <ReactECharts style={{height:500}}
-                    option={
-                        
-                        {
+                <Grid.Column width={15}>
+                    <ReactECharts style={{height:700}}
+                        option={{
+                            timeline:{
+                                axisType: 'category',
+                                orient: 'vertical',
+                                autoPlay: true,
+                                inverse: true,
+                                playInterval: 1000,
+                                left: null,
+                                right: 0,
+                                top: 20,
+                                bottom: 20,
+                                width: 55,
+                                height: null,
+                                symbol: 'none',
+                                checkpointStyle: {
+                                    borderWidth: 2
+                                },
+                                controlStyle: {
+                                    showNextBtn: false,
+                                    showPrevBtn: false
+                                },
+                                data: timeline
+                            },
                             tooltip: {
                                 formatter: function (e) {
                                     if(e.dataType == 'node'){
-                                        if(e.data.name == 'Bilal Khan '){
-                                            return `
-                                            ${e.data.name}
-                                        `;
-                                        }else{
-                                            return `
-                                            ${e.data.name}<br />
-                                            ${e.data.years}
-                                        `;
-                                        }
-                                        
+                                        return `${e.data.name} `;
                                     }else if(e.dataType == 'edge'){
                                         return (
-                                            `${e.data.source}>${e.data.target}<br />
-                                            ${e.data.research.Title}<br />
-                                            ${e.data.research.Year}
+                                            `${e.data.source} and ${e.data.target}<br />
+                                            ${e.data.content.Title}<br />
+                                            ${e.data.content.Year}
                                             `
                                         )
                                         ;
-                                    }else{
-                                        return ``;
                                     }
-                                    
+                                    console.log(e)
                                 }
                             },
-                            
-                            legend: [{
-                                data: graph.categories.map(function (a) {
-                                    return a.name;
-                                }),
-                                bottom:0
-                            }],
-                            
-                            animationEasingUpdate: 'quinticInOut',
                             series: [
                                 {
-                                    name: 'co-author network',
+                                    name: 'Researcher',
                                     type: 'graph',
                                     layout: 'force',
                                     data: graph.nodes,
                                     links: graph.links,
-                                    categories: graph.categories,
+                                    //categories: graph.categories,
                                     roam: true,
+                                    center: [300,400],
+                                    height: 400,
+                                    width: 400,
                                     label: {
-                                        position: 'right'
+                                        position: 'right',
+                                        formatter: '{b}'
                                     },
-                                    force: {
-                                        repulsion: 100
+                                    lineStyle: {
+                                        color: 'red',
+                                        curveness: 0.3
                                     },
                                     emphasis: {
                                         focus: 'adjacency',
                                         lineStyle: {
-                                            width: 4
+                                            width: 10
                                         }
+                                    }
+                                },
+                                {
+                                    name: 'Researcher1',
+                                    type: 'graph',
+                                    layout: 'circular',
+                                    circular: {
+                                        rotateLabel: true
                                     },
+                                    data: graph.nodes,
+                                    //links: graph.links,
+                                    //categories: graph.categories,
+                                    center: [800,400],
+                                    height: 300,
+                                    width: 300,
+                                    roam: true,
+                                    label: {
+                                        position: 'right',
+                                        formatter: '{b}'
+                                    },
+                                    lineStyle: {
+                                        color: 'source',
+                                        curveness: 0.3
+                                    }
                                 }
-                            ]
-                        }
-                    }
+                            ],
+                            options: option_custom
+                        }}
+                   
                 />
                 </Grid.Column>
-                <Grid.Column width={2}>
-                    <Slider onChange={handleChange} vertical min={1998} max={2021} marks={graph.marks} step={1} included={false} defaultValue={pickedYear} />
+                <Grid.Column width={1}>
+                    
                 </Grid.Column>
             </Grid>
         </Segment>
-        <Segment>
-            <ReactECharts style={{height:500}}
-                option={
-                    {
-                        tooltip: {},
-                        legend: [{
-                            // selectedMode: 'single',
-                            data: positioned_graph.categories.map(function (a) {
-                                return a.name;
-                            })
-                        }],
-                        animationDuration: 1500,
-                        animationEasingUpdate: 'quinticInOut',
-                        series: [
-                            {
-                                name: 'Researcher',
-                                type: 'graph',
-                                layout: 'none',
-                                data: positioned_graph.nodes,
-                                links: positioned_graph.links,
-                                categories: positioned_graph.categories,
-                                roam: true,
-                                label: {
-                                    position: 'right',
-                                    formatter: '{b}'
-                                },
-                                lineStyle: {
-                                    color: 'source',
-                                    curveness: 0.3
-                                },
-                                emphasis: {
-                                    focus: 'adjacency',
-                                    lineStyle: {
-                                        width: 10
-                                    }
-                                }
-                            }
-                        ]
-                    }
-                }
-
-            />
-        </Segment>
-        <Segment>
-            <ReactECharts style={{height:500}}
-                option={
-                    {
-                        title: {
-                            text: 'Research Team work',
-                            subtext: 'Circular layout',
-                            top: 'bottom',
-                            left: 'right'
-                        },
-                        tooltip: {},
-                        legend: [{
-                            data: graph.categories.map(function (a) {
-                                return a.name;
-                            })
-                        }],
-                        animationDurationUpdate: 1500,
-                        animationEasingUpdate: 'quinticInOut',
-                        series: [
-                            {
-                                name: 'Researcher',
-                                type: 'graph',
-                                layout: 'circular',
-                                circular: {
-                                    rotateLabel: true
-                                },
-                                data: graph.nodes,
-                                links: graph.links,
-                                categories: graph.categories,
-                                roam: true,
-                                label: {
-                                    position: 'right',
-                                    formatter: '{b}'
-                                },
-                                lineStyle: {
-                                    color: 'source',
-                                    curveness: 0.3
-                                }
-                            }
-                        ]
-                    }
-                }
-            />
-        </Segment>
-        </>
+        
     )
 }
 
-export default Impact_cmp
+export default Impact

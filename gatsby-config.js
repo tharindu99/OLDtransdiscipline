@@ -41,23 +41,23 @@ module.exports = {
       },
     },
     `gatsby-transformer-csv`,
-    {
-      resolve: `gatsby-source-mysql`,
-      options: {
-        connectionDetails: {
-          host: 'localhost',
-          user: 'user1',
-          password: 'user1',
-          database: 'khan'
-        },
-        queries: [
-          {
-            statement: 'SELECT * FROM publication;',
-            idFieldName: 'ID',
-            name: 'publication_db'
-          }
-        ]
-      }
-    }
+    // {
+    //   resolve: `gatsby-source-mysql`,
+    //   options: {
+    //     connectionDetails: {
+    //       host: 'localhost',
+    //       user: 'user1',
+    //       password: 'user1',
+    //       database: 'khan'
+    //     },
+    //     queries: [
+    //       {
+    //         statement: 'SELECT * FROM publication;',
+    //         idFieldName: 'ID',
+    //         name: 'publication_db'
+    //       }
+    //     ]
+    //   }
+    // }
   ],
 };
