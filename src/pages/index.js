@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { graphql } from 'gatsby'
-import { Container, Header, Menu, Segment} from 'semantic-ui-react'
+import { Container, Header, Menu, Segment, Rail} from 'semantic-ui-react'
 import About_cmp from '../components/about/about';
 
 import Background_cmp from '../components/background'
@@ -45,7 +45,12 @@ const IndexPage = ({data}) => {
       case 'Funding':
           return <Funding_cmp data={data.allGrantsCsv.nodes}></Funding_cmp>
       case 'MatrixViz':
-          return <MatrixViz data={data.allPdFgraphCsv.nodes} nodeclusters={data.allDocClustersCsv.nodes}></MatrixViz>
+          return (
+            <MatrixViz data={data.allPdFgraphCsv.nodes} 
+                       nodeclusters={data.allDocClustersCsv.nodes} 
+                       pdf_files={data.allFile.nodes}
+                       publications={data.allPublicationCsv.nodes}>
+            </MatrixViz>)
       default:
         return <Segment>Under constructions</Segment>
     }
@@ -104,6 +109,7 @@ const IndexPage = ({data}) => {
       <Container>
         <Active_content></Active_content>
       </Container>
+      
       
      
 
@@ -186,7 +192,14 @@ export const query = graphql`
         clusters9
         doc
       }
-    }
+    },
+      allFile(filter: { extension: { eq: "pdf" } }) {
+        nodes {
+          name
+          publicURL
+        }
+      }
+    
   }
   `
 

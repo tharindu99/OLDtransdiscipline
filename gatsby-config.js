@@ -40,6 +40,13 @@ module.exports = {
         path: `./src/data/`,
       },
     },
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `pdf`,
+        path: `./static/pdf/`,
+      },
+    },
     `gatsby-transformer-csv`,
     // {
     //   resolve: `gatsby-source-mysql`,

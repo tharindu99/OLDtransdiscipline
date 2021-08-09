@@ -1,14 +1,17 @@
 import React, {useEffect,useRef, useState} from 'react'
-import { Segment, Grid, Button } from 'semantic-ui-react'
+import { Segment, Grid, Button, Rail } from 'semantic-ui-react'
 import * as d3 from 'd3';
 import ThresholdPicker from '../thresholdpicker'
 import './MatrixViz.css'
+import FurtherInfo from './furtherInfo'
 
 
 
-const MatrixViz = ({data,nodeclusters}) => {
+const MatrixViz = ({data,nodeclusters,pdf_files, publications}) => {
 
     const [ColorChanges, setColorChanges] = useState({LB:0.1,UB:0.2})
+    const [ClusterValue, setClusterValue] = useState("name")
+    const [DocsDetails, setDocsDetails] = useState({'similarity':0, docs:[]})
     
 
     const links_tmp = data.map(d=>{
@@ -114,16 +117,6 @@ const MatrixViz = ({data,nodeclusters}) => {
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-        let Tooltip = d3.select("#mapX")
-            .append("div")
-            .style("opacity", 0)
-            .attr("class", "tooltip")
-            .style("background-color", "white")
-            .style("border", "solid")
-            .style("border-width", "2px")
-            .style("border-radius", "5px")
-            .style("padding", "5px")
-
         let matrix = [], n = nodes.length
 
         nodes.forEach(function(node, i) {
@@ -182,12 +175,15 @@ const MatrixViz = ({data,nodeclusters}) => {
             .enter().append("g")
             .attr("class", "row")
             .attr("transform", function(d, i) { return "translate(0," + x(i) + ")"; })
+            .attr('stroke','black')
+            .style("stroke-width", 0.1)
             .each(row1);
 
         row.append("line")
             .attr("x2", width);
 
-        row.append("text")
+        let row_txt =  row.append("text")
+            .attr("class","rowText")
             .attr("x", -6)
             .attr("y", x.bandwidth() / 2)
             .attr("dy", ".32em")
@@ -199,6 +195,8 @@ const MatrixViz = ({data,nodeclusters}) => {
             .data(matrix)
             .enter().append("g")
             .attr("class", "column")
+            .attr('stroke','black')
+            .style("stroke-width", 0.1)
             .attr("transform", function(d, i) { return "translate(" + x(i) + ")rotate(-90)"; });
       
             column.append("line")
@@ -225,22 +223,49 @@ const MatrixViz = ({data,nodeclusters}) => {
                         .attr("height", x.bandwidth())
                         //.style("fill-opacity", function(d) { return z(d.z); })
                         .style("fill", function(d) { return colorFunc(d.z) })
-                        //.on("mouseover", mouseover)
-                        //.on("mousemove", mousemove)
-                        //.on("mouseout", mouseout);
+                        .on("mouseover", mouseover)
+                        .on("click", mouseclick)
+                        .on("mouseout", mouseout);
         }
         function mouseover(event,d) {
-            Tooltip
-                .style("opacity", 1)
+
             d3.select(this)
                 .style("stroke", "black")
-                .style("opacity", 1)
+                .style("stroke-width", 2)
+
+            var xPos = d3.select(this).attr('x')
+            var yPos = d3.select(this).attr('y')
+           
+            svg.append('text')
+                .attr({
+                    'class': 'tooltip',
+                    'x': xPos + 30,
+                    'y': yPos - 15,
+                    'text-anchor': 'middle',
+                    'font-family': 'sans-serif',
+                    'font-size': '14px',
+                    'font-weight': 'bold',
+                    'fill': 'black'
+                })
+                //.text('kkk');
+            
+
             // d3.selectAll(".row text").classed("active", function(d, i) {  return i == p.y; });
             // d3.selectAll(".column text").classed("active", function(d, i) { return i == p.x; });
         }
 
-        function mousemove (d) {
-            console.log(d)
+        function mouseclick (event,d) {
+
+            // console.log(nodes[d.x].name)
+            // console.log(nodes[d.y].name)
+            setDocsDetails({
+                similarity: d.z,
+                docs: [
+                    {'docID': nodes[d.x].name.slice(3)},
+                    {'docID': nodes[d.y].name.slice(3)}
+                ]
+            }
+            )
             // Tooltip
             //   .html("The exact value of<br>this cell is: " + d)
             //   .style("left", (d3.mouse(this)[0]+70) + "px")
@@ -248,20 +273,25 @@ const MatrixViz = ({data,nodeclusters}) => {
         }
 
         function mouseout() {
-            Tooltip
-             .style("opacity", 0)
             d3.select(this)
-            .style("stroke", "none")
-            .style("opacity", 0.8)
-            //d3.selectAll("text").classed("active", false);
+                .style("stroke", "black")
+                .style("stroke-width", 0.1)
+            // Tooltip
+            //  .style("opacity", 0)
+            // d3.select(this)
+            // .style("stroke", "none")
+            // .style("opacity", 0.8)
+            // //d3.selectAll("text").classed("active", false);
         }
 
         d3.select("#order").on("change", function() {
             clearTimeout(timeout);
-            order(this.value);
+            order(this.value)
+            
         });
 
         function order(value) {
+            setClusterValue(value)
             x.domain(orders[value]);
             let t = svg.transition().duration(2500);
             t.selectAll(".row")
@@ -277,7 +307,7 @@ const MatrixViz = ({data,nodeclusters}) => {
             }
             
             let timeout = setTimeout(function() {
-                order("group");
+                //order("group");
                 d3.select("#order").property("selectedIndex", 2).node().focus();
             }, 5000);
       
@@ -290,6 +320,7 @@ const MatrixViz = ({data,nodeclusters}) => {
 
 
     return(
+        <>
         <Segment>
             <Grid>
                 <Grid.Row >
@@ -298,7 +329,7 @@ const MatrixViz = ({data,nodeclusters}) => {
                     </Grid.Column>                
                     <Grid.Column width={3}>
                         <select id="order">
-                            <option value="name">by Name</option>
+                            <option value="name" selected='selected' >by Name</option>
                             <option value="count">by Frequency</option>
                             <option value="clusters2">by Clusters2</option>
                             <option value="clusters3">by Clusters3</option>
@@ -339,6 +370,10 @@ const MatrixViz = ({data,nodeclusters}) => {
                 </Grid.Row>
             </Grid>
         </Segment>
+       
+       <FurtherInfo data={DocsDetails} pdf_files={pdf_files} publications={publications}></FurtherInfo>
+            
+        </>
     )
 }
 
