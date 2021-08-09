@@ -1,0 +1,22 @@
+ID,PIs,Job,funder_shortname,Funder,YearStart,YearEnd,Amount,Category,Status,Title
+1,"Khan, Dombrowski",co-PI,NIH,National Institute of Health (NIH) R01 GM118427 ,2015,2020,1.20,"Social networks, public health",Awarded,Modeling Social Behavior via Dynamic Network Interaction
+2,"Khan, Al-Fuqaha, Dombrowski",PI,NSF,National Science Foundation (NSF) AST 1443985,2014,2015,0.50,"Social networks, wireless technology",Awarded,Applying Behavioral-Ecological Network Models to Enhance Distributed Spectrum Access in Cognitive Radio
+3,"Khan, Dombrowski",PI,NIH,National Institute of Health (NIH),2014,2017,3.10,"Social networks, public health",Awarded,Injection Risk Networks in Rural Puerto Rico
+5,Hagan (Khan co-I),NULL,NIH,"National Institute of Health (NIH) National Institute of Drug Abuse, R01 DA034637",2014,2017,2.80,"Social networks, public health",Awarded,Addressing Hepatitis C and Hepatocellular Carcinoma: Current & Future Epidemics
+6,"Dank, Khan",NULL,DOJ,"National Institute of Justice, Department of Justice 2010-IJ-CX-1674
+",2011,2013,0.50,"Social networks, public health",Awarded,Estimating the Unlawful Commercial Sex Economy in the United States
+7,"Khan, Dombrowski",PI,NIH,National Institute of Health (NIH),2009,2011,0.74,"Social networks, public health",Awarded,Injection Drug User Network Topologies and HIV Stabilization Dynamics
+8,Rempel (Khan methodologist),NULL,DOJ,Department of Justice (DOJ),2009,2012,1.30,"Social networks, public health",Awarded,Commercial Sexual Exploitation of Children in the US
+9,"Dombrowski, Khan",PI,NSF,National Science Foundation (NSF) Division of Arctic Social Sciences ARC-0908155,2009,2012,0.56,"Social networks, public health",Awarded,Informal Social Networks in Two Labrador Communities
+10,"Khan, Bakiras, Curtis, Tawfeeq",PI,NSF,National Science Foundation (NSF) SMA 1338485,2014,2016,0.25,"Social networks, wireless technology.",Awarded,Towards a cellphone-based infrastructure for harvesting dynamic interaction data
+11,Khan,PI,NSA,National Security Agency (NSA),2007,2009,0.07,Wireless networks,Awarded,Information Acquisition and Delivery for Disaster Recovery Teams
+12,Wendel (Khan co-I),NULL,NIJ,National Institute of Justice (NIJ),2007,2011,0.47,"Social networks, public health",Awarded,Retail Methamphetamine Markets in New York City
+13,Khan,PI,NSA,National Security Agency (NSA),2005,2007,0.03,"computational algebra, combinatorial group theory",Awarded,Computational Aspects of Algebraic Geometry over Groups
+14,"Dombrowski, Khan",,NSF,National Science Foundation (NSF) SMA 1461132 ,2015,2018,0.35,"Social networks, public health",Awarded,REU Site: Undergraduate Research Opportunities to Broaden Participation in Minority Health Research
+15,"Dombrowski, Khan",PI,NIH,National Institute of Health (NIH) R01 DA037117-S3,2018,2019,0.47,"Social networks, public health",Awarded,Competing Supplement: Injection Risk Networks in Rural Puerto Rico
+19,Abadie (Khan co-I),NULL,NIH,National Institutes of Health (NIH) National Institute on Drug Abuse 12563411,2018,2020,0.41,"Social networks, public health",Awarded,Assessing the effects of hurricane Maria on Opioid Agonist Treatment access among PWID in rural Puerto Rico
+17,McQuillan (Khan co-I),NULL,NIH,National Institutes of Health (NIH) National Institute of General Medicine,2019,2022,1.30,"Social networks, public health",Awarded,Worlds of Connections: Engaging Youth with Health Research through Network Science and Stories in Augmented Reality
+18,Dombrowski (Khan co-I),NULL,NSF,National Science Foundation (NSF) 1757739,2018,2021,0.22,"Social networks, public health",Awarded,REU Site: Social Network Analysis for Solving Minority Health Disparities
+20, Wexler (Khan co-I),NULL,NIH,"National Institutes of Health (NIH), National Institute of Mental Health R01 MH112458 ",2018,2023,3.60,"Social networks, public health",Awarded,Promoting Community Conversations about Research to End Native Youth Suicide in Rural Alaska
+21,Wood (Khan co-I),NULL,NIH,National Institutes of Health (NIH) National Institute on Drug Abuse R01 DA047823,2019,2024,3.00,"Social networks, public health",NULL,Biomarkers for Dysbiosis-Related HIV-Associated Cognitive Disorders among Persons Who Inject Drugs in Puerto Rico
+22,Dombrowski (Khan co-I and co-Director of Longitudinal Networks Core) ,NULL,NIH,National Institutes of Health (NIH)  General Medical Sciences P20 GM130461,2019,2024,11.80,"Social networks, public health",Awarded,Rural Drug Addiction Research COBRE
