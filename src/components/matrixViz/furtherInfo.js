@@ -1,5 +1,5 @@
 import React, {useEffect,useRef, useState} from 'react'
-import { Card, Grid, Button, Rail, Segment } from 'semantic-ui-react'
+import { Card, Grid, Button, Rail, Segment, Sticky, Header } from 'semantic-ui-react'
 
 const FurtherInfo = ({data,pdf_files, publications}) => {
 
@@ -37,6 +37,10 @@ const FurtherInfo = ({data,pdf_files, publications}) => {
     } 
 
     return (
+        <>
+        {/* <Sticky pushing>
+            <Header as='h3'>Stuck Content</Header>
+        </Sticky> */}
         <Rail internal position='right' style={{}}>
             <Segment>
                 <h4>Similarity: {data.similarity} </h4>
@@ -53,6 +57,7 @@ const FurtherInfo = ({data,pdf_files, publications}) => {
             </Segment>
             
         </Rail>
+        </>
     )
 }
 

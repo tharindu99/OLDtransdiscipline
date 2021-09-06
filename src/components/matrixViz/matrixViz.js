@@ -1,5 +1,5 @@
 import React, {useEffect,useRef, useState} from 'react'
-import { Segment, Grid, Button, Rail } from 'semantic-ui-react'
+import { Segment, Grid, Button, Rail,Sticky, Header } from 'semantic-ui-react'
 import * as d3 from 'd3';
 import ThresholdPicker from '../thresholdpicker'
 import './MatrixViz.css'
@@ -369,7 +369,9 @@ const MatrixViz = ({data,nodeclusters,pdf_files, publications}) => {
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
+            
         </Segment>
+        
        
        <FurtherInfo data={DocsDetails} pdf_files={pdf_files} publications={publications}></FurtherInfo>
             

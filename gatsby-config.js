@@ -14,7 +14,12 @@ module.exports = {
         icon: "src/images/icon.png",
       },
     },
-    "gatsby-plugin-mdx",
+    {
+      resolve: `gatsby-plugin-mdx`,
+      options: {
+        extensions: [`.mdx`, `.md`],
+      },
+    },
     "gatsby-plugin-sharp",
     "gatsby-transformer-sharp",
     {
@@ -45,6 +50,13 @@ module.exports = {
       options: {
         name: `pdf`,
         path: `./static/pdf/`,
+      },
+    },
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `md_content`,
+        path: `./src/page_content/`,
       },
     },
     `gatsby-transformer-csv`,
