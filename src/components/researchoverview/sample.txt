@@ -14,87 +14,77 @@ import { dataGrid } from 'dc';
 const ResearchOverview_cmp = ({data}) =>{ 
 
     const [ loading, setLoading ] = useState(true);
-    const [ Data, SetData] = useState([]);
-    
-    data.forEach(d => {
-        d.Year = parseInt(d.Year)
-        d.Subject = String(d.Subject).split("#").map(d=> d.trim())
-        d.co_authors =  String(d.Authors).split("#").map(d=> d.trim())
-    })
+    const [ M_Data, SetM_data] = useState([]);
+
+    console.log(data)
 
     useEffect (() => {
-        let M_data = []
-        data.forEach(d=>{
-            const subject = d.Subject
-            d.M_Subject = null
-            if(Array.isArray(subject)){
-                subject.forEach(e=>{
-                    d.M_Subject = e
-                    M_data.push(d)
-                })
-            }
-            const co_authors = d.co_authors
-            if(Array.isArray(co_authors)){
-                co_authors.forEach(e=>{
-                    d.M_co_authors = e
-                    M_data.push(d)
-                })
-            }
+        const data_Modified_tmp = [] 
+        data.forEach(d => {
+            d.Year = parseInt(d.Year)
+            const subject_array = String(d.Subject).split("#")//.map(d=> d.trim())
+            const co_authors_array = String(d.Authors).split("#").map(d=> d.trim()) //co_author_manipulator(String(d.Authors))
+            //const co_authors_array_filtered = co_authors_array.filter(d => d.indexOf('Bilal Khan') == -1)
+            console.log(d.Subject)
+            //d.Subject = subject_array
+            d.co_authors = co_authors_array
+        
+            // subject_array.forEach(s => {
+                
+            //         co_authors_array.forEach(c => {
+            //             d.M_Subject = s
+            //             d.M_co_authors = c
+            //             data_Modified_tmp.push(d)
+            //         })
+                
+                
+            // })
         })
-
-        const MM_data = M_data.filter(d=> d.M_co_authors.indexOf('Bilal Khan') === -1)
-
-        SetData(MM_data)
-        //console.log(M_data)
+        SetM_data(data_Modified_tmp)
         setLoading(false)
         
     },[])
 
-    const cx = crossfilter(Data)
+        const cx = crossfilter(data)
+        const dimensionYear = cx.dimension(d => d.Year)
+        const groupYear = dimensionYear.group().reduceCount(function(d) {return d.ID;});
 
-    let Year_arr = {}
-    const dimensionYear = cx.dimension(d => d.Year)
-    const groupYear = dimensionYear.group()
+        const dimensionID = cx.dimension(d => d.ID)
+        const groupID = dimensionID.group()
+        //setTableData(dimensionID.top(Infinity))
+
+        const dimensionSubject = cx.dimension(d => d.Subject)
+        const groupSubject = dimensionSubject.group()
         .reduce(
             function(p,v,nf){
-                const yr = v.Year
-                if(typeof Year_arr[yr] === 'undefined'){
-                    Year_arr[yr]= [v.id]
-                }else{
-                    Year_arr[yr] =  [...new Set([...Year_arr[yr],...[v.id]])]   //Year_arr[yr].concat([v.id])
-                }
-                
-                return Year_arr[yr].length
+                //console.log(v)
+                return p
             },
             function(p,v,nf){
-                const yr = v.Year
-
-                if(typeof Year_arr[yr] === 'undefined'){
-                    return p
-                }else{
-                    Year_arr[yr] = Year_arr[yr].filter(d=>d.id !== v.id)   //Year_arr[yr].concat([v.id])
-                }
-                
-                return Year_arr[yr].length
+                return p
             },
-            function(p,v,nf){
-                return 0
+            function(){
+                return []
             }
+
         )
 
-    const dimensionSubject = cx.dimension(d => d.M_Subject)
-    const groupSubject = dimensionSubject.group()
-        
-    const dimensionID = cx.dimension(d => d.ID)
-    const groupID = dimensionID.group()
-    
-    const dimensionCoAuthor = cx.dimension(d => d.M_co_authors)
-    const groupCoAuthor = dimensionCoAuthor.group()
+        const dimensionCoAuthor = cx.dimension(d => d.M_co_authors)
+        const groupCoAuthor = dimensionCoAuthor.group()
 
     const resetClicked = () => {
         dc.filterAll()
         dc.renderAll()
     }
+
+    useEffect(()=>{
+        
+    },[])
+
+    //setInterval(function(){ setTableData(dimensionID.top(Infinity)) }, 1000);
+        
+
+   // console.log(groupYear.all())
 
     return (
         <> 
@@ -148,7 +138,7 @@ const ResearchOverview_cmp = ({data}) =>{
                         </Segment>
                     </Grid.Column>
                 </Grid.Row>
-                {/* <Grid.Row stretched>
+                <Grid.Row stretched>
                     <Grid.Column width={16}>
                         <table class="ui definition table">
                             <thead>
@@ -178,8 +168,21 @@ const ResearchOverview_cmp = ({data}) =>{
                         </table>
                         
                     </Grid.Column>
-                </Grid.Row>  */}
+                </Grid.Row> 
             </Grid>
+
+            
+             
+            
+            {/* <SunburstChart 
+                dimension={dimensionAuthor} 
+                group={groupAuthor} 
+                legend={dc.legend()}
+                radius={200}
+                innerRadius={30}
+                renderLabel={false}
+                
+            /> */}
            
         </Segment>
         

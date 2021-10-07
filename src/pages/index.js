@@ -32,6 +32,7 @@ const IndexPage = ({data}) => {
     d.cosine = parseFloat(d.cosine)
   })
 
+
   const Active_content = () => {
     switch(activeItem) {
       case 'About':
@@ -135,7 +136,7 @@ export const query = graphql`
         Editor
         File
         GoogleScholarURL
-        ID
+        Counter
         Pages
         Publication
         Publisher

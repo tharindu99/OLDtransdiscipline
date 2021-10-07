@@ -1,9 +1,18 @@
 table,td{
-    border: 1px solid black;
+    /* border: 1px solid black; */
     border-collapse: collapse;
     margin: 25px 0;
     font-size: 0.9em;
     font-family: sans-serif;
   }
+
+  .dc-chart g.row text {
+    fill: black !important; 
+  }
+
+  .x.axis text {
+    text-anchor: end !important;
+    transform: rotate(-45deg);
+}
 
  
