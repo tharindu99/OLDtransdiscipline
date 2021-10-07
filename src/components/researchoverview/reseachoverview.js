@@ -66,16 +66,14 @@ const ResearchOverview_cmp = ({data}) =>{
                 
                 return Year_arr[yr].length
             },
-            function(p,v,nf){
+            function(p,v){
                 const yr = v.Year
-
-                if(typeof Year_arr[yr] === 'undefined'){
-                    return p
+                if(Year_arr[yr].indexOf(v.id) !== -1){
+                    return p-1
                 }else{
-                    Year_arr[yr] = Year_arr[yr].filter(d=>d.id !== v.id)   //Year_arr[yr].concat([v.id])
+                    return p
                 }
                 
-                return Year_arr[yr].length
             },
             function(p,v,nf){
                 return 0
