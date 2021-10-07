@@ -9,6 +9,7 @@ import ResearchOverview_cmp from '../components/researchoverview/reseachoverview
 import Impact from '../components/impact/impact';
 import Funding_cmp from '../components/funding/funding';
 import MatrixViz from '../components/matrixViz/matrixViz';
+import Mentorship from '../components/mentorship/mentorship'
 
 const pageStyles = {
   
@@ -45,6 +46,8 @@ const IndexPage = ({data}) => {
           return <Impact data={data.allPublicationCsv.nodes}></Impact>
       case 'Funding':
           return <Funding_cmp data={data.allGrantsCsv.nodes}></Funding_cmp>
+      case 'Mentorship':
+          return <Mentorship data={data.allStudentCsv.nodes}></Mentorship>
       case 'MatrixViz':
           return (
             <MatrixViz data={data.allPdFgraphCsv.nodes} 
@@ -144,6 +147,19 @@ export const query = graphql`
         Subject
         Title
         Volume
+        Year
+        id
+      }
+    },
+    allStudentCsv {
+      nodes {
+        Current
+        Degree
+        Institution
+        LinkedIn
+        MyRole
+        Name
+        Title
         Year
         id
       }

@@ -89,7 +89,7 @@ const Impact = ({data}) => {
                         formatter: '{b}'
                     },
                     lineStyle: {
-                        color: 'red',
+                        color: '#1E1D1C',
                         curveness: 0.3
                     },
                     itemStyle: {
@@ -111,11 +111,15 @@ const Impact = ({data}) => {
                     //categories: graph.categories,
                     roam: true,
                     label: {
+                        show: true,
                         position: 'right',
                         formatter: '{b}'
                     },
+                    circular: {
+                        rotateLabel: true
+                    },
                     lineStyle: {
-                        color: 'red',
+                        color: '#1E1D1C',
                         curveness: 0.3
                     },
                     itemStyle: {
@@ -141,8 +145,6 @@ const Impact = ({data}) => {
             links:[]
         })
     },[])
-    
-console.log(graph)
 
     return (
         <Segment>
@@ -225,7 +227,7 @@ console.log(graph)
                                     data: graph.nodes,
                                     //links: graph.links,
                                     //categories: graph.categories,
-                                    center: [800,400],
+                                    center: [750,350],
                                     height: 300,
                                     width: 300,
                                     roam: true,

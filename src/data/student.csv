@@ -1,6 +1,6 @@
 Name,Institution,Degree,MyRole,Title,Year,File,Current,LinkedIn
 "Mohamed Saad","Department of Computer Science, City University of New York Graduate Center",Ph.D.,"Thesis Advisor","Secure critical care resource optimization based on heterogeneous vital signs",2010,thesis/saad.pdf,NULL,www.linkedin.com/pub/mohamed-khedr-saad/10/20/7a4
-"Jeremy Seideman","Department of Computer Science, City University of New York Graduate Center",Ph.D.,"Thesis Advisor","Towards a Theory of Natural Selection and Evolution in Malware",9999,NULL,"American Express",www.linkedin.com/pub/jeremy-d-seideman/b/87b/19a
+"Jeremy Seideman","Department of Computer Science, City University of New York Graduate Center",Ph.D.,"Thesis Advisor","Towards a Theory of Natural Selection and Evolution in Malware",1999,NULL,"American Express",www.linkedin.com/pub/jeremy-d-seideman/b/87b/19a
 "Zeki Bilgin","Department of Computer Science, City University of New York Graduate Center",Ph.D.,"Thesis Advisor","Enhancing the performance of active connections in MANETs through dynamic route and power optimization",2010,thesis/bilgin.pdf,"Turkish National Gendarmie",NULL
 "Yuri Cantor","Department of Computer Science, City University of New York Graduate Center",Ph.D.,"Thesis Advisor","Morphogenesis and Growth Driven by Selection of Dynamical Properties",2017,thesis/cantor.pdf,NULL,NULL
 "Deniz Sarioz","Department of Computer Science, City University of New York Graduate Center",Ph.D.,"Committee Member","Obstacle representations of graphs",2013,NULL,Google,www.linkedin.com/in/sarioz
@@ -13,7 +13,7 @@ Name,Institution,Degree,MyRole,Title,Year,File,Current,LinkedIn
 "Carol Dottin","Forensic Computing Program, John Jay College CUNY",M.Sc.,"Thesis Advisor","Cooperative Networking and Control for Emergency Response Teams",2009,thesis/dottin.pdf,"Senior Programmer/Analyst, Heritage Insurance",NULL
 "Ghassen Ben Brahim","Department of Computer Science, University of Missouri, Coumbia",M.Sc.,"Thesis Advisor"," TRON: Toolkit for Routing in Optical Networks",2007,NULL,"Prince Mohammad Bin Fahd University",NULL
 "Cindy Zimmerman","Forensic Computing Program, John Jay College CUNY",M.Sc.,"Thesis Advisor","An Evaluation of Private-Sector Digital Forensics Processes and Practices",2013,thesis/zimmerman.pdf,Axispoint,NULL
-"Richard Alcalde","Forensic Computing Program, John Jay College CUNY",M.Sc.,"Thesis Advisor","Efficient data mining of forensic metadata from multi-disk environments",9999,NULL,"Con Ed",www.linkedin.com/pub/richard-alcalde/11/612/632
+"Richard Alcalde","Forensic Computing Program, John Jay College CUNY",M.Sc.,"Thesis Advisor","Efficient data mining of forensic metadata from multi-disk environments",1999,NULL,"Con Ed",www.linkedin.com/pub/richard-alcalde/11/612/632
 "Michael Tsamis","John Jay College",B.Sc.,"Project Mentor","Auralizing network security data",2011,NULL,eMarketer,NULL
 "Djonique Crisp","John Jay College",B.Sc.,"Project Mentor","A meta network survey website generator",2010,NULL,NULL,NULL
 "Carrie Schaper","John Jay College",B.Sc.,"Project Mentor","LANscaper: An extensible SCAPY-based Network Monitoring Platform",2009,NULL,"Pentester, Unnamed Agency",NULL
