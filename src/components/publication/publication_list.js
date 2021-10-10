@@ -6,8 +6,6 @@ import { Item, Label,Header,Icon} from "semantic-ui-react"
 
 const Publication_list = ({data}) =>{
 
-    console.log(data)
-
     const pub_list = data.map(d => { 
         return (
             <div key={d[0]} >
@@ -15,7 +13,7 @@ const Publication_list = ({data}) =>{
             <Item.Group divided>
                 {d[1].map(pub => {
                     return (
-                    <Item key={pub.ID}>
+                    <Item key={pub.Counter}>
                         <Item.Content>
                             <Item.Header>{pub.Title}</Item.Header>
                             <Item.Meta>

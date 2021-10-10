@@ -1,23 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Segment, Button, Grid } from "semantic-ui-react"
+import { Segment, Grid } from "semantic-ui-react"
 import ReactECharts from 'echarts-for-react';
 import * as d3 from "d3";
-import Slider, { Range } from 'rc-slider';
 import 'rc-slider/assets/index.css';
-import { linkHorizontal } from 'd3';
-
-
-let links = []
 
 const Impact = ({data}) => {
 
     const [graph,setgraph] = useState({nodes:[],links:[],categories:[]})
-    const [Roundgraph,setRoundgraph] = useState({RoundNodes:[],RoundLinks:[],Roundategories:[]})
     const data_ByYear = d3.group(data, d => parseInt(d.Year))
     const timeline = [...data_ByYear.keys()].sort()
-    let sereies = []
-
-    //console.log(data_ByYear)
 
     const link_calc = (author_list,content) =>{
         const authors = author_list.filter(d => d != 'Bilal Khan')
@@ -43,33 +34,25 @@ const Impact = ({data}) => {
                 links = links.concat(link_calc(authors_list,e))
             }
         });
-        //console.log(links)
         links.forEach(e => {
-            
             tmp_nodes.push(e.source)
             tmp_nodes.push(e.target)
         });
 
         const tmp_nodes1 = [...new Set(tmp_nodes)]
-        
         tmp_nodes1.forEach(e => {
-            
             nodes.push({id:e,name:e,symbolSize: 10})
         }); 
 
         return {nodes:nodes,links:links}
     }
-    
 
     let option_custom = []
     let timeline_data_custom = []
 
-    
-
     for (var n = 0; n < timeline.length; n++) {
         timeline_data_custom.push(timeline[n]);
         const grp = grap_calc(timeline[n])
-        //console.log(grp)
         option_custom.push({
             title: {
                 show: true,
@@ -82,7 +65,6 @@ const Impact = ({data}) => {
                     layout: 'force',
                     data: grp.nodes,
                     links: grp.links,
-                    //categories: graph.categories,
                     roam: true,
                     label: {
                         position: 'right',
@@ -95,12 +77,6 @@ const Impact = ({data}) => {
                     itemStyle: {
                         color: '#4169E1'
                     }
-                    // emphasis: {
-                    //     focus: 'adjacency',
-                    //     lineStyle: {
-                    //         width: 10
-                    //     }
-                    // }
                 },
                 {
                     name: 'yr1'+timeline[n],
@@ -108,7 +84,6 @@ const Impact = ({data}) => {
                     layout: 'circular',
                     data: grp.nodes,
                     links: grp.links,
-                    //categories: graph.categories,
                     roam: true,
                     label: {
                         show: true,
@@ -125,19 +100,10 @@ const Impact = ({data}) => {
                     itemStyle: {
                         color: '#4169E1'
                     }
-                    // emphasis: {
-                    //     focus: 'adjacency',
-                    //     lineStyle: {
-                    //         width: 10
-                    //     }
-                    // }
-            
                 }
             ],
         });
     }
-
-
 
     useEffect(()=>{
         setgraph({
@@ -225,8 +191,6 @@ const Impact = ({data}) => {
                                         rotateLabel: true
                                     },
                                     data: graph.nodes,
-                                    //links: graph.links,
-                                    //categories: graph.categories,
                                     center: [750,350],
                                     height: 300,
                                     width: 300,
@@ -246,12 +210,10 @@ const Impact = ({data}) => {
                    
                 />
                 </Grid.Column>
-                <Grid.Column width={1}>
-                    
+                <Grid.Column width={1}> 
                 </Grid.Column>
             </Grid>
         </Segment>
-        
     )
 }
 

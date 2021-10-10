@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { graphql } from 'gatsby'
 import { Container, Header, Menu, Segment, Rail} from 'semantic-ui-react'
-import About_cmp from '../components/about/about';
 
+import About_cmp from '../components/about/about';
 import Background_cmp from '../components/background'
 import Publication_cmp from '../components/publication/publication';
 import ResearchOverview_cmp from '../components/researchoverview/reseachoverview';
@@ -48,13 +48,13 @@ const IndexPage = ({data}) => {
           return <Funding_cmp data={data.allGrantsCsv.nodes}></Funding_cmp>
       case 'Mentorship':
           return <Mentorship data={data.allStudentCsv.nodes}></Mentorship>
-      case 'MatrixViz':
-          return (
-            <MatrixViz data={data.allPdFgraphCsv.nodes} 
-                       nodeclusters={data.allDocClustersCsv.nodes} 
-                       pdf_files={data.allFile.nodes}
-                       publications={data.allPublicationCsv.nodes}>
-            </MatrixViz>)
+      // case 'MatrixViz':
+      //     return (
+      //       <MatrixViz data={data.allPdFgraphCsv.nodes} 
+      //                  nodeclusters={data.allDocClustersCsv.nodes} 
+      //                  pdf_files={data.allFile.nodes}
+      //                  publications={data.allPublicationCsv.nodes}>
+      //       </MatrixViz>)
       default:
         return <Segment>Under constructions</Segment>
     }
@@ -63,7 +63,7 @@ const IndexPage = ({data}) => {
 
   return (
     <>
-    <Header as='h1' content='Bilal Khan' style={style.h1} textAlign='center'/>
+    <Header as='h1' content='Prof. Bilal Khan' style={style.h1} textAlign='center'/>
       <Container style={{ padding: '0em 0em 10px' }} >
         <Menu pointing>
             <Menu.Item
@@ -101,11 +101,11 @@ const IndexPage = ({data}) => {
               active={activeItem === 'Profile'}
               onClick={handleMenuClick}
             />
-            <Menu.Item
+            {/* <Menu.Item
               name='MatrixViz'
               active={activeItem === 'MatrixViz'}
               onClick={handleMenuClick}
-            />
+            /> */}
           </Menu>
           
       </Container>
@@ -162,6 +162,7 @@ export const query = graphql`
         Title
         Year
         id
+        photo
       }
     },
     allGrantsCsv {
