@@ -10,6 +10,7 @@ import Impact from '../components/impact/impact';
 import Funding_cmp from '../components/funding/funding';
 import MatrixViz from '../components/matrixViz/matrixViz';
 import Mentorship from '../components/mentorship/mentorship'
+import Profile from '../components/profile/Profile';
 
 const pageStyles = {
   
@@ -48,6 +49,8 @@ const IndexPage = ({data}) => {
           return <Funding_cmp data={data.allGrantsCsv.nodes}></Funding_cmp>
       case 'Mentorship':
           return <Mentorship data={data.allStudentCsv.nodes}></Mentorship>
+      case 'Profile':
+          return <Profile data={data.allStudentCsv.nodes}></Profile>
       // case 'MatrixViz':
       //     return (
       //       <MatrixViz data={data.allPdFgraphCsv.nodes} 

@@ -9,7 +9,8 @@ const CoAuthorsGraph = ({data,CoAuthors_callBack}) => {
     const TOP_selector = (arr) =>{
         return (arr.length > TOP)? arr.slice(-1*TOP):arr
     }
-
+   
+    
     const CoAuthorsGraph_clac = (M_data) => {
         let all_authors = new Map()
         M_data.forEach(e => {
@@ -26,8 +27,25 @@ const CoAuthorsGraph = ({data,CoAuthors_callBack}) => {
         const result = new Map([...all_authors.entries()].sort((a, b) => a[1] - b[1]));
         const Data_Co_authors = TOP_selector(Array.from(result.keys()))
         const Data_pubCount = TOP_selector(Array.from(result.values()))
+        const colorMe =  d3.scaleOrdinal(d3.schemeCategory10)
+
+        const auth_color = (auth) => { 
+             
+            const c = (auth.charCodeAt(0))%10
+            console.log(auth,c)
+            return colorMe(c)
+        }
+
+        const Data_pubCount_final = Data_pubCount.map((d,i)=>(
+            
+            {
+                value: d,
+                //itemStyle: {color: auth_color(Data_Co_authors[i])}
+            }
+        ))
+
         return {
-            xData: Data_pubCount,
+            xData: Data_pubCount_final,
             yData: Data_Co_authors
         }
     }

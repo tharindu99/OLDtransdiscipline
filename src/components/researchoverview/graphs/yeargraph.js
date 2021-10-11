@@ -1,6 +1,7 @@
 import React, { useState, useEffect  } from 'react';
 import ReactECharts from 'echarts-for-react';
 import * as d3 from 'd3';
+import { Constants } from 'tsparticles';
 
 const YearGraph = ({data,Year_callBack}) => {
 
@@ -19,6 +20,7 @@ const YearGraph = ({data,Year_callBack}) => {
     const DEFAULT_OPTION = {
         tooltip: {
         },
+        legend: {},
         xAxis: {
         type: 'category',
         data: graph_data.xData
@@ -30,7 +32,7 @@ const YearGraph = ({data,Year_callBack}) => {
             {
                 data: graph_data.yData,
                 type: 'bar',
-                selectedMode: 'multiple'
+                selectedMode: 'single'
             }
         ]
     }
@@ -67,13 +69,20 @@ const YearGraph = ({data,Year_callBack}) => {
         Year_callBack(FilteredData)
     }
 
+    // const onClick = (d) => {
+    //     console.log(d)
+    // }
+
+    console.log("rendered,,,,,")
+
     return (
         <ReactECharts 
             style={{height:275}} 
             option={option}
+            notMerge={true}
+            lazyUpdate={true}
             onEvents={{
                 'selectchanged': onChartClick
-                //'dataZoom': this.onDataZoom,
             }}
         />
         
